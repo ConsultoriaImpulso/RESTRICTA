@@ -1,6 +1,6 @@
 // AUTOGENERADO por scripts/build-dataset.mjs — NO EDITAR A MANO.
 // Fuente: data/zbe.csv (export del Google Sheets)
-// Generado: 2026-05-04T14:21:51.083Z
+// Generado: 2026-05-04T14:34:43.359Z
 const DATASET = {
   "catalogos": {
     "grupos_perfil": [
@@ -1265,5 +1265,18 @@ const DATASET = {
       "lng": -0.8891
     }
   ],
-  "reglas": []
+  "reglas": [
+    {
+      "zona_id": "a-coruna",
+      "etiquetas": [
+        "0"
+      ],
+      "tipo_vehiculo": "autobus",
+      "tonelaje_min": 0,
+      "tonelaje_max": 3500,
+      "perfil": "particular",
+      "efecto": "CONDICIONADO",
+      "condiciones": []
+    }
+  ]
 };
