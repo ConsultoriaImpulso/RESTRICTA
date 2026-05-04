@@ -1,44 +1,307 @@
 {
-  "_comment": "Define los grupos visibles del paso 'Perfil' del formulario y la metadata legible de cada perfil. El id debe coincidir EXACTAMENTE con la columna Perfil_vehículo del CSV.",
-
+  "_comment": "Define los grupos visibles del paso 'Perfil' del formulario y la metadata legible de cada perfil. El id debe coincidir EXACTAMENTE con la columna Perfil_vehículo del CSV. El campo `vehiculos` controla en qué tipos de vehículo aparece este perfil (paso 3 del formulario).",
   "grupos_perfil": [
-    { "id": "particular",        "nombre": "Particular" },
-    { "id": "vivienda",          "nombre": "Residencia y vivienda" },
-    { "id": "profesional",       "nombre": "Profesional / empresa" },
-    { "id": "servicios-conductor","nombre": "Servicios al conductor" },
-    { "id": "transporte",        "nombre": "Transporte colectivo" },
-    { "id": "oficial",           "nombre": "Servicios oficiales y emergencias" },
-    { "id": "exenciones",        "nombre": "Exenciones especiales" }
+    {
+      "id": "particular",
+      "nombre": "Particular"
+    },
+    {
+      "id": "vinculado",
+      "nombre": "Vinculado al lugar"
+    },
+    {
+      "id": "transportado",
+      "nombre": "Por persona transportada"
+    },
+    {
+      "id": "profesional",
+      "nombre": "Profesional / actividad"
+    },
+    {
+      "id": "publico",
+      "nombre": "Servicio público / especial"
+    }
   ],
-
   "perfiles": [
-    { "id": "particular",                              "nombre": "Particular",                       "descripcion": "Vehículo de uso privado sin actividad asociada.",                  "grupo": "particular",         "orden": 0 },
-
-    { "id": "residente",                               "nombre": "Residente",                        "descripcion": "Empadronado o con vivienda dentro de la ZBE.",                     "grupo": "vivienda",           "orden": 1 },
-    { "id": "invitado-residente",                      "nombre": "Invitado de residente",            "descripcion": "Acceso puntual autorizado por un residente.",                      "grupo": "vivienda",           "orden": 2 },
-    { "id": "garaje-propio",                           "nombre": "Garaje propio",                    "descripcion": "Plaza o garaje en propiedad/alquiler dentro de la ZBE.",           "grupo": "vivienda",           "orden": 3 },
-
-    { "id": "empresa",                                 "nombre": "Empresa",                          "descripcion": "Vehículo de empresa con actividad económica.",                     "grupo": "profesional",        "orden": 1 },
-    { "id": "autonomo",                                "nombre": "Autónomo",                         "descripcion": "Profesional autónomo dado de alta.",                               "grupo": "profesional",        "orden": 2 },
-    { "id": "mudanza",                                 "nombre": "Mudanza",                          "descripcion": "Servicio de mudanza autorizado.",                                  "grupo": "profesional",        "orden": 3 },
-    { "id": "carga-descarga",                          "nombre": "Carga y descarga",                 "descripcion": "Reparto de mercancías o logística urbana.",                        "grupo": "profesional",        "orden": 4 },
-    { "id": "obras",                                   "nombre": "Obras",                            "descripcion": "Vehículo afecto a obra pública o privada.",                        "grupo": "profesional",        "orden": 5 },
-
-    { "id": "autoescuela",                             "nombre": "Autoescuela",                      "descripcion": "Vehículo de prácticas o examen.",                                  "grupo": "servicios-conductor","orden": 1 },
-    { "id": "taxi",                                    "nombre": "Taxi",                             "descripcion": "Vehículo con licencia de auto-taxi.",                              "grupo": "servicios-conductor","orden": 2 },
-    { "id": "vtc",                                     "nombre": "VTC",                              "descripcion": "Vehículo de transporte con conductor.",                            "grupo": "servicios-conductor","orden": 3 },
-
-    { "id": "transporte-publico",                      "nombre": "Transporte público",               "descripcion": "Autobús urbano o interurbano regular.",                            "grupo": "transporte",         "orden": 1 },
-    { "id": "menor-escolar",                           "nombre": "Transporte escolar",               "descripcion": "Servicio de transporte de menores.",                               "grupo": "transporte",         "orden": 2 },
-    { "id": "transporte-sanitario",                    "nombre": "Transporte sanitario",             "descripcion": "Ambulancias y traslado sanitario.",                                "grupo": "transporte",         "orden": 3 },
-    { "id": "transporte-funerario",                    "nombre": "Transporte funerario",             "descripcion": "Servicio funerario.",                                              "grupo": "transporte",         "orden": 4 },
-
-    { "id": "especiales-emergencia",                   "nombre": "Emergencias",                      "descripcion": "Bomberos, protección civil, emergencias.",                         "grupo": "oficial",            "orden": 1 },
-    { "id": "policia-guardia-civil-fuerzas-armadas",   "nombre": "Policía / Guardia Civil / FAS",    "descripcion": "Cuerpos y fuerzas de seguridad y FAS.",                            "grupo": "oficial",            "orden": 2 },
-    { "id": "servicio-municipal",                      "nombre": "Servicio municipal",               "descripcion": "Vehículos del ayuntamiento o concesionarias.",                     "grupo": "oficial",            "orden": 3 },
-
-    { "id": "movilidad-reducida",                      "nombre": "Movilidad reducida",               "descripcion": "Tarjeta acreditativa de PMR.",                                     "grupo": "exenciones",         "orden": 1 },
-    { "id": "paciente-medico",                         "nombre": "Paciente médico",                  "descripcion": "Acceso justificado por motivo médico.",                            "grupo": "exenciones",         "orden": 2 },
-    { "id": "vehiculo-historico",                      "nombre": "Vehículo histórico",               "descripcion": "Matriculado como histórico (REVHE).",                              "grupo": "exenciones",         "orden": 3 }
+    {
+      "id": "particular",
+      "nombre": "Particular",
+      "descripcion": "Vehículo de uso privado sin actividad asociada.",
+      "grupo": "particular",
+      "orden": 0,
+      "vehiculos": [
+        "turismo",
+        "moto",
+        "furgoneta",
+        "camion",
+        "autobus"
+      ]
+    },
+    {
+      "id": "residente",
+      "nombre": "Residente",
+      "descripcion": "Empadronado o con vivienda dentro de la ZBE.",
+      "grupo": "vinculado",
+      "orden": 1,
+      "vehiculos": [
+        "turismo",
+        "moto",
+        "furgoneta"
+      ]
+    },
+    {
+      "id": "garaje-propio",
+      "nombre": "Titular de garaje",
+      "descripcion": "Plaza o garaje en propiedad/alquiler dentro de la ZBE.",
+      "grupo": "vinculado",
+      "orden": 2,
+      "vehiculos": [
+        "turismo",
+        "moto",
+        "furgoneta",
+        "camion",
+        "autobus"
+      ]
+    },
+    {
+      "id": "invitado-residente",
+      "nombre": "Invitado por residente",
+      "descripcion": "Acceso puntual autorizado por un residente.",
+      "grupo": "vinculado",
+      "orden": 3,
+      "vehiculos": [
+        "turismo",
+        "moto",
+        "furgoneta"
+      ]
+    },
+    {
+      "id": "movilidad-reducida",
+      "nombre": "Movilidad reducida",
+      "descripcion": "Tarjeta acreditativa de PMR.",
+      "grupo": "transportado",
+      "orden": 1,
+      "vehiculos": [
+        "turismo",
+        "moto",
+        "furgoneta"
+      ]
+    },
+    {
+      "id": "paciente-medico",
+      "nombre": "Paciente médico",
+      "descripcion": "Acceso justificado por motivo médico.",
+      "grupo": "transportado",
+      "orden": 2,
+      "vehiculos": [
+        "turismo",
+        "moto",
+        "furgoneta"
+      ]
+    },
+    {
+      "id": "menor-escolar",
+      "nombre": "Recogida escolar",
+      "descripcion": "Servicio de transporte de menores.",
+      "grupo": "transportado",
+      "orden": 3,
+      "vehiculos": [
+        "turismo",
+        "moto",
+        "furgoneta",
+        "autobus"
+      ]
+    },
+    {
+      "id": "taxi",
+      "nombre": "Taxi",
+      "descripcion": "Vehículo con licencia de auto-taxi.",
+      "grupo": "profesional",
+      "orden": 1,
+      "vehiculos": [
+        "turismo",
+        "furgoneta"
+      ]
+    },
+    {
+      "id": "vtc",
+      "nombre": "VTC",
+      "descripcion": "Vehículo de transporte con conductor.",
+      "grupo": "profesional",
+      "orden": 2,
+      "vehiculos": [
+        "turismo",
+        "furgoneta"
+      ]
+    },
+    {
+      "id": "carga-descarga",
+      "nombre": "Carga y descarga",
+      "descripcion": "Reparto de mercancías o logística urbana.",
+      "grupo": "profesional",
+      "orden": 3,
+      "vehiculos": [
+        "turismo",
+        "moto",
+        "furgoneta",
+        "camion"
+      ]
+    },
+    {
+      "id": "autonomo",
+      "nombre": "Autónomo",
+      "descripcion": "Profesional autónomo dado de alta.",
+      "grupo": "profesional",
+      "orden": 4,
+      "vehiculos": [
+        "turismo",
+        "moto",
+        "furgoneta",
+        "camion",
+        "autobus"
+      ]
+    },
+    {
+      "id": "empresa",
+      "nombre": "Empresa",
+      "descripcion": "Vehículo de empresa con actividad económica.",
+      "grupo": "profesional",
+      "orden": 5,
+      "vehiculos": [
+        "turismo",
+        "moto",
+        "furgoneta",
+        "camion",
+        "autobus"
+      ]
+    },
+    {
+      "id": "mudanza",
+      "nombre": "Mudanza",
+      "descripcion": "Servicio de mudanza autorizado.",
+      "grupo": "profesional",
+      "orden": 6,
+      "vehiculos": [
+        "turismo",
+        "furgoneta",
+        "camion",
+        "autobus"
+      ]
+    },
+    {
+      "id": "obras",
+      "nombre": "Obras",
+      "descripcion": "Vehículo afecto a obra pública o privada.",
+      "grupo": "profesional",
+      "orden": 7,
+      "vehiculos": [
+        "turismo",
+        "moto",
+        "furgoneta",
+        "camion"
+      ]
+    },
+    {
+      "id": "autoescuela",
+      "nombre": "Autoescuela",
+      "descripcion": "Vehículo de prácticas o examen.",
+      "grupo": "profesional",
+      "orden": 8,
+      "vehiculos": [
+        "turismo",
+        "moto",
+        "furgoneta",
+        "camion",
+        "autobus"
+      ]
+    },
+    {
+      "id": "transporte-sanitario",
+      "nombre": "Transporte sanitario",
+      "descripcion": "Ambulancias y traslado sanitario.",
+      "grupo": "profesional",
+      "orden": 9,
+      "vehiculos": [
+        "turismo",
+        "furgoneta",
+        "camion"
+      ]
+    },
+    {
+      "id": "transporte-funerario",
+      "nombre": "Transporte funerario",
+      "descripcion": "Servicio funerario.",
+      "grupo": "profesional",
+      "orden": 10,
+      "vehiculos": [
+        "turismo",
+        "furgoneta"
+      ]
+    },
+    {
+      "id": "especiales-emergencia",
+      "nombre": "Emergencia",
+      "descripcion": "Bomberos, protección civil, emergencias.",
+      "grupo": "publico",
+      "orden": 1,
+      "vehiculos": [
+        "turismo",
+        "moto",
+        "furgoneta",
+        "camion",
+        "autobus"
+      ]
+    },
+    {
+      "id": "policia-guardia-civil-fuerzas-armadas",
+      "nombre": "FFAA y Cuerpos de Seguridad",
+      "descripcion": "Cuerpos y fuerzas de seguridad y FAS.",
+      "grupo": "publico",
+      "orden": 2,
+      "vehiculos": [
+        "turismo",
+        "moto",
+        "furgoneta",
+        "camion",
+        "autobus"
+      ]
+    },
+    {
+      "id": "transporte-publico",
+      "nombre": "Transporte público regular",
+      "descripcion": "Autobús urbano o interurbano regular.",
+      "grupo": "publico",
+      "orden": 3,
+      "vehiculos": [
+        "furgoneta",
+        "autobus"
+      ]
+    },
+    {
+      "id": "servicio-municipal",
+      "nombre": "Servicio municipal",
+      "descripcion": "Vehículos del ayuntamiento o concesionarias.",
+      "grupo": "publico",
+      "orden": 4,
+      "vehiculos": [
+        "turismo",
+        "moto",
+        "furgoneta",
+        "camion",
+        "autobus"
+      ]
+    },
+    {
+      "id": "vehiculo-historico",
+      "nombre": "Vehículo histórico",
+      "descripcion": "Matriculado como histórico (REVHE).",
+      "grupo": "publico",
+      "orden": 5,
+      "vehiculos": [
+        "turismo",
+        "moto",
+        "furgoneta"
+      ]
+    }
   ]
 }
