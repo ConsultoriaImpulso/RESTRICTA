@@ -1,0 +1,48 @@
+name: Build dataset.js
+
+# Cuando alguien (o el otro workflow) hace push de datos nuevos,
+# este workflow regenera dataset.js y lo commitea de vuelta.
+# GitHub Pages se actualiza automáticamente al haber un commit nuevo.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/zbe.csv'
+      - 'data/geojson/**'
+      - 'scripts/build-dataset.mjs'
+      - 'scripts/coordinates.json'
+      - 'scripts/perfiles.json'
+  workflow_dispatch:   # también disparable a mano desde la pestaña Actions
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Evitar bucle infinito: si el commit lo hizo este mismo bot, no relanzar
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generar dataset.js
+        run: node scripts/build-dataset.mjs
+
+      - name: Commit y push si dataset.js cambió
+        run: |
+          git config user.name  "restricta-bot"
+          git config user.email "actions@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain dataset.js)" ]]; then
+            git add dataset.js
+            git commit -m "chore: regenera dataset.js [skip ci]"
+            git push
+          else
+            echo "dataset.js sin cambios."
+          fi

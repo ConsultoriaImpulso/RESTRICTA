@@ -1,0 +1,62 @@
+name: Sync CSV desde Google Sheets
+
+# OPCIONAL. Baja el CSV publicado desde Google Sheets cada hora
+# (y a demanda) y lo commitea si ha cambiado. El otro workflow
+# (build.yml) se encadenará y regenerará dataset.js.
+#
+# Para activarlo:
+# 1. En el Sheets: Archivo → Compartir → Publicar en la web
+#       Pestaña: la que contiene los datos
+#       Formato: Valores separados por comas (.csv)
+#       Copia la URL larga que termina en /pub?gid=...&single=true&output=csv
+# 2. En el repo: Settings → Secrets and variables → Actions → New repository secret
+#       Nombre: SHEETS_CSV_URL
+#       Valor:  esa URL
+# 3. Habilita este workflow en Actions y opcionalmente edita el cron.
+
+on:
+  schedule:
+    - cron: '17 * * * *'   # cada hora en el minuto 17
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Comprobar secreto
+        run: |
+          if [[ -z "${{ secrets.SHEETS_CSV_URL }}" ]]; then
+            echo "::warning::Falta el secreto SHEETS_CSV_URL. Saltando sync."
+            exit 0
+          fi
+
+      - name: Descargar CSV del Sheets publicado
+        env:
+          URL: ${{ secrets.SHEETS_CSV_URL }}
+        run: |
+          if [[ -z "$URL" ]]; then exit 0; fi
+          curl -sSL "$URL" -o /tmp/zbe.csv
+          # Sanity check: tiene al menos la cabecera correcta
+          if ! head -1 /tmp/zbe.csv | grep -q "Municipio_ZBE"; then
+            echo "::error::El CSV descargado no parece válido (no encuentro 'Municipio_ZBE' en la cabecera)."
+            head -3 /tmp/zbe.csv
+            exit 1
+          fi
+          mv /tmp/zbe.csv data/zbe.csv
+
+      - name: Commit y push si data/zbe.csv cambió
+        run: |
+          git config user.name  "restricta-bot"
+          git config user.email "actions@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain data/zbe.csv)" ]]; then
+            git add data/zbe.csv
+            git commit -m "data: sync CSV desde Google Sheets"
+            git push
+          else
+            echo "data/zbe.csv sin cambios."
+          fi

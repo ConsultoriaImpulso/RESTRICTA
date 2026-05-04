@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RESTRICTA · Plataforma Integral 2026</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000; --s1:#080808; --s2:#0d0d0d; --s3:#121212;
+  --br:#1a1a1a; --br2:#222;
+  --tx:#e8e8e8; --mu:#9ca3af; --mu2:#4b5563;
+  --teal:#3FE6D0;
+  --grn:#10b981; --amb:#f59e0b; --red:#ef4444;
+}
+html,body{height:100%;background:var(--bg);color:var(--tx);font-family:'DM Sans',system-ui,sans-serif;font-size:13px;overflow:hidden}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font-family:inherit;outline:none}
+
+/* TOPBAR */
+.topbar{
+  height:56px;background:#000;border-bottom:1px solid var(--br);
+  display:flex;align-items:center;padding:0 24px;gap:14px;position:relative;z-index:1000;
+}
+.topbar::after{
+  content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--teal) 35%,var(--teal) 65%,transparent);
+  opacity:.35;
+}
+.logo-mark{
+  width:34px;height:34px;background:var(--teal);border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;color:#000;
+}
+.logo-text{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;color:#fff;line-height:1.1}
+.logo-sub{font-family:'DM Sans',sans-serif;font-weight:400;color:rgba(255,255,255,.45);font-size:.55rem;letter-spacing:.18em;margin-top:3px}
+.brand-right{margin-left:auto;display:flex;align-items:center}
+.step-indicator{margin-left:auto;display:flex;align-items:center;gap:14px;font-family:'Space Mono',monospace;font-size:.65rem;color:var(--mu);letter-spacing:.1em}
+.step-dot{width:7px;height:7px;border-radius:50%;background:var(--br2);transition:all .2s}
+.step-dot.active{background:var(--teal);box-shadow:0 0 8px var(--teal)}
+.step-dot.done{background:var(--teal);opacity:.4}
+
+/* CONTAINER */
+.app{height:calc(100vh - 56px);position:relative;overflow:hidden}
+.screen{position:absolute;inset:0;transition:transform .35s cubic-bezier(.5,.0,.2,1),opacity .25s}
+.screen.hidden{transform:translateX(20px);opacity:0;pointer-events:none}
+
+/* PANTALLA 1: FORM */
+.form-wrap{
+  height:100%;overflow-y:auto;padding:0 24px;display:grid;
+  grid-template-rows:1fr auto 1fr;
+  background:radial-gradient(1200px 600px at 50% -10%,rgba(63,230,208,0.04),transparent);
+}
+.form-wrap::-webkit-scrollbar{width:7px}
+.form-wrap::-webkit-scrollbar-thumb{background:var(--br2);border-radius:3px}
+
+.form-top-area{padding:32px 0 12px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:14px}
+.form-middle-area{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 0}
+.form-bottom-area{padding:18px 0 32px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:10px}
+.form-bottom-area{padding:18px 0 32px;display:flex;flex-direction:column;align-items:center;gap:10px}
+
+.form-card{display:contents}
+
+.form-intro{display:flex;flex-direction:column;align-items:center;gap:8px}
+.form-h1{
+  font-family:'Syne',sans-serif;font-weight:600;font-size:2.35rem;line-height:1.05;
+  letter-spacing:-.02em;
+}
+.form-sub{color:var(--mu);font-size:.97rem;line-height:1.5;max-width:440px;text-align:center}
+
+/* progresión step-by-step */
+.step{
+  opacity:0;transform:translateY(14px);
+  transition:opacity .4s cubic-bezier(.5,0,.2,1),transform .4s cubic-bezier(.5,0,.2,1);
+  pointer-events:none;display:none;flex-direction:column;gap:12px;
+  align-items:center;width:100%;max-width:560px;
+}
+.step.visible{opacity:1;transform:translateY(0);pointer-events:auto;display:flex}
+.step.locked{display:none}
+.step .step-summary{display:none}
+.summaries-row .step-summary{display:flex}
+
+.summaries-row{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:10px;
+  width:100%;
+}
+.summaries-row:empty{display:none}
+
+.step-summary{
+  display:none;align-items:center;gap:11px;font-size:.85rem;color:var(--teal);
+  font-family:'Space Mono',monospace;letter-spacing:.05em;
+  padding:8px 14px;justify-content:center;
+  background:rgba(63,230,208,.06);border:1px solid rgba(63,230,208,.2);
+  border-radius:7px;
+}
+.step-summary .ss-text{display:flex;align-items:center;gap:8px}
+.step-summary .ss-edit{
+  cursor:pointer;color:var(--mu);font-size:.67rem;letter-spacing:.12em;
+  background:transparent;border:1px solid var(--br2);
+  padding:4px 10px;border-radius:4px;transition:all .12s;
+  text-transform:uppercase;
+}
+.step-summary .ss-edit:hover{color:var(--teal);border-color:var(--teal);background:rgba(63,230,208,.1)}
+
+.field-label{
+  font-family:'Space Mono',monospace;font-size:.72rem;color:var(--teal);
+  letter-spacing:.22em;text-transform:uppercase;text-align:center;
+}
+.field-hint{font-size:.82rem;color:var(--mu);line-height:1.45;text-align:center;max-width:440px}
+
+/* TABS matrícula vs etiqueta */
+.entry-tabs{display:flex;gap:0;border:1px solid var(--br2);border-radius:8px;padding:3px;background:rgba(255,255,255,.02);margin:0 auto}
+.entry-tab{
+  padding:8px 16px;font-family:'Space Mono',monospace;font-size:.72rem;
+  letter-spacing:.08em;color:var(--mu);border-radius:5px;cursor:pointer;
+  transition:all .12s;text-transform:uppercase;
+}
+.entry-tab:hover{color:var(--tx)}
+.entry-tab.active{background:rgba(63,230,208,.12);color:var(--teal);box-shadow:0 0 0 1px rgba(63,230,208,.3) inset}
+.entry-pane{display:none;flex-direction:column;gap:10px;margin-top:12px;width:100%;max-width:480px;align-items:center}
+.entry-pane.active{display:flex}
+
+/* PLATE */
+.plate{
+  display:flex;align-items:stretch;background:#fff;border-radius:7px;overflow:hidden;
+  border:2px solid #facc15;box-shadow:0 0 16px rgba(250,204,21,.15);max-width:340px;
+}
+.plate-eu{
+  width:38px;background:#0033a0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;color:#facc15;
+  font-family:'Space Mono',monospace;font-size:.55rem;line-height:1;
+}
+.plate-eu .stars{font-size:.85rem;margin-bottom:2px}
+.plate-input{
+  flex:1;border:none;background:#fff;color:#000;padding:13px 16px;
+  font-family:'Space Mono',monospace;font-size:1.32rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+}
+.plate-input::placeholder{color:#bbb;font-weight:400}
+
+.plate-info{
+  font-family:'Space Mono',monospace;font-size:.82rem;color:var(--teal);
+  letter-spacing:.05em;margin-top:8px;display:none;
+}
+.plate-info.visible{display:block}
+
+/* ETIQUETAS */
+.label-grid{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.lbl-card{
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  padding:11px 13px;border-radius:9px;border:1px solid var(--br2);
+  background:rgba(255,255,255,.02);cursor:pointer;transition:all .15s;
+  min-width:74px;
+}
+.lbl-card:hover{border-color:var(--br2);background:rgba(255,255,255,.04)}
+.lbl-card.active{background:rgba(63,230,208,.08);border-color:var(--teal)}
+.lbl-circle{
+  width:42px;height:42px;border-radius:50%;border:2px solid;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue','Syne',sans-serif;font-weight:700;font-size:1.1rem;
+}
+.lbl-circle.l-0{border-color:#3b82f6;color:#3b82f6}
+.lbl-circle.l-eco{
+  border:none;
+  background:linear-gradient(90deg,#3b82f6 50%,#10b981 50%);
+  position:relative;
+  font-size:0;
+  padding:2px;
+}
+.lbl-circle.l-eco::before{
+  content:'ECO';
+  position:absolute;inset:2px;
+  display:flex;align-items:center;justify-content:center;
+  background:#000;border-radius:50%;
+  font-family:'Bebas Neue','Syne',sans-serif;font-weight:700;font-size:.65rem;
+  color:#10b981;
+}
+.lbl-circle.l-c{border-color:#10b981;color:#10b981}
+.lbl-circle.l-b{border-color:#fbbf24;color:#fbbf24}
+.lbl-circle.l-na{border-color:#9ca3af;color:#9ca3af}
+.lbl-card.active .lbl-circle{box-shadow:0 0 12px currentColor}
+.lbl-name{font-family:'Space Mono',monospace;font-size:.67rem;color:var(--mu);letter-spacing:.08em}
+.lbl-card.active .lbl-name{color:var(--teal)}
+
+/* FUEL */
+.fuel-grid{display:none;grid-template-columns:repeat(3,1fr);gap:6px;width:100%}
+.fuel-grid.visible{display:grid}
+
+/* Botón DGT */
+.dgt-btn{
+  width:100%;max-width:380px;display:flex;align-items:center;justify-content:center;gap:10px;
+  background:var(--teal);color:#000;font-family:'Syne',sans-serif;font-weight:700;
+  font-size:.92rem;padding:13px 20px;border-radius:8px;letter-spacing:.04em;border:none;
+  cursor:pointer;transition:transform .12s,box-shadow .15s,opacity .15s;margin-top:4px;
+}
+.dgt-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 20px rgba(63,230,208,.25)}
+.dgt-btn:disabled{opacity:.3;cursor:not-allowed}
+.dgt-btn-icon{font-size:1rem}
+
+.dgt-help{
+  font-size:.78rem;color:var(--mu);line-height:1.55;text-align:center;
+  max-width:420px;margin-top:2px;
+}
+.dgt-help kbd{
+  background:rgba(255,255,255,.06);border:1px solid var(--br2);border-radius:3px;
+  padding:2px 6px;font-family:'Space Mono',monospace;font-size:.72rem;color:var(--tx);
+}
+
+/* Step 1.5 - selector etiqueta tras abrir DGT */
+.dgt-step15{
+  display:none;flex-direction:column;gap:13px;align-items:center;
+  margin-top:14px;padding:16px 18px 14px;
+  background:rgba(63,230,208,.05);border:1px solid rgba(63,230,208,.25);
+  border-radius:9px;width:100%;max-width:520px;
+  animation:slide-in .35s cubic-bezier(.5,0,.2,1);
+}
+.dgt-step15.visible{display:flex}
+@keyframes slide-in{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.dgt-step15-h{display:flex;align-items:center;gap:10px}
+.dgt-step15-num{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:.82rem;color:#000;
+  background:var(--teal);padding:4px 10px;border-radius:4px;letter-spacing:.04em;
+}
+.dgt-step15-title{
+  font-family:'Syne',sans-serif;font-weight:600;font-size:.97rem;color:#fff;
+  letter-spacing:-.01em;
+}
+.fuel-btn{
+  background:rgba(255,255,255,.03);border:1px solid var(--br2);border-radius:7px;
+  padding:9px 10px;color:var(--mu);font-family:'Space Mono',monospace;
+  font-size:.6rem;letter-spacing:.05em;transition:all .12s;text-transform:uppercase;
+}
+.fuel-btn:hover{color:var(--tx);border-color:var(--br)}
+.fuel-btn.active{background:rgba(63,230,208,.1);border-color:var(--teal);color:var(--teal)}
+
+/* VEHÍCULO */
+.veh-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:600px}
+.veh-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  padding:16px 11px;border-radius:9px;border:1px solid var(--br2);
+  background:rgba(255,255,255,.02);min-height:108px;text-align:center;
+}
+.veh-btn:hover{border-color:var(--br);background:rgba(255,255,255,.04)}
+.veh-btn.active{background:rgba(63,230,208,.08);border-color:var(--teal)}
+.veh-btn .veh-ico{font-size:1.7rem;line-height:1;margin-bottom:3px}
+.veh-btn .veh-name{font-family:'Syne',sans-serif;font-weight:600;font-size:.9rem;color:#fff;text-align:center}
+.veh-btn .veh-sub{font-size:.7rem;color:var(--mu);font-family:'Space Mono',monospace;letter-spacing:.04em;text-align:center}
+.veh-btn.active .veh-name{color:var(--teal)}
+
+/* PESO */
+.peso-block{display:none;flex-direction:column;gap:10px;margin-top:14px;padding-top:16px;border-top:1px dashed var(--br2);width:100%;max-width:520px;align-items:center}
+.peso-block.visible{display:flex}
+.peso-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;width:100%}
+.peso-btn{
+  background:rgba(255,255,255,.03);border:1px solid var(--br2);border-radius:7px;
+  padding:13px 11px;color:var(--mu);font-family:'Space Mono',monospace;
+  font-size:.72rem;letter-spacing:.05em;text-align:left;line-height:1.35;
+}
+.peso-btn:hover{color:var(--tx);border-color:var(--br)}
+.peso-btn.active{background:rgba(63,230,208,.1);border-color:var(--teal);color:var(--teal)}
+.peso-btn .peso-rng{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;display:block;margin-bottom:3px}
+
+/* PERFIL: nivel 1 (particular vs no-particular) */
+.perfil-l1{display:grid;grid-template-columns:1fr 1fr;gap:11px;width:100%;max-width:600px}
+.perfil-card{
+  padding:20px 20px;border:1px solid var(--br2);border-radius:11px;
+  background:rgba(255,255,255,.02);cursor:pointer;transition:all .15s;
+  display:flex;flex-direction:column;gap:7px;text-align:left;
+}
+.perfil-card:hover{border-color:var(--br);background:rgba(255,255,255,.04)}
+.perfil-card.active{background:rgba(63,230,208,.07);border-color:var(--teal)}
+.perfil-card .pc-h{
+  font-family:'Syne',sans-serif;font-weight:600;font-size:1.12rem;color:#fff;
+  letter-spacing:-.01em;
+}
+.perfil-card .pc-d{font-size:.84rem;color:var(--mu);line-height:1.5}
+.perfil-card.active .pc-h{color:var(--teal)}
+
+/* PERFIL: nivel 2 (grupos desplegables) */
+.perfil-l2{display:none;flex-direction:column;gap:7px;margin-top:14px;padding-top:14px;border-top:1px dashed var(--br2);width:100%;max-width:560px;text-align:left}
+.perfil-l2.visible{display:flex}
+.grupo-perfil{
+  border:1px solid var(--br2);border-radius:9px;background:rgba(255,255,255,.02);
+  overflow:hidden;
+}
+.grupo-h{
+  padding:13px 16px;display:flex;justify-content:flex-start;align-items:baseline;gap:9px;
+  cursor:pointer;font-family:'Syne',sans-serif;font-weight:600;font-size:.97rem;
+  flex-wrap:wrap;
+}
+.grupo-h:hover{background:rgba(255,255,255,.03)}
+.grupo-h .grupo-title{flex-shrink:0}
+.grupo-h .grupo-resumen{
+  font-family:'DM Sans',sans-serif;font-weight:400;font-size:.77rem;color:var(--mu);
+  letter-spacing:.01em;line-height:1.4;flex:1;min-width:0;
+}
+.grupo-h .chev{color:var(--mu);transition:transform .2s;font-size:.82rem;flex-shrink:0}
+.grupo.expanded .grupo-h .chev{transform:rotate(90deg)}
+.grupo-h .count{
+  font-family:'Space Mono',monospace;font-size:.67rem;color:var(--teal);
+  background:rgba(63,230,208,.08);padding:3px 7px;border-radius:4px;letter-spacing:.05em;
+  margin-left:auto;flex-shrink:0;
+}
+.grupo-body{display:none;padding:4px 16px 14px}
+.grupo.expanded .grupo-body{display:block}
+.perfil-checks{display:flex;flex-direction:column;gap:5px}
+.pcheck{
+  display:flex;align-items:flex-start;gap:11px;padding:9px 11px;border-radius:6px;
+  cursor:pointer;transition:background .1s;
+}
+.pcheck:hover{background:rgba(255,255,255,.03)}
+.pcheck-box{
+  width:17px;height:17px;border:1.5px solid var(--mu2);border-radius:3px;flex-shrink:0;
+  margin-top:2px;display:flex;align-items:center;justify-content:center;
+  transition:all .1s;
+}
+.pcheck.checked .pcheck-box{background:var(--teal);border-color:var(--teal)}
+.pcheck.checked .pcheck-box::after{content:'✓';color:#000;font-size:.82rem;font-weight:700;line-height:1}
+.pcheck-name{font-size:.9rem;color:var(--tx);line-height:1.3}
+.pcheck-desc{font-size:.77rem;color:var(--mu);line-height:1.4;margin-top:3px}
+.pcheck.checked .pcheck-name{color:var(--teal)}
+
+/* CTA */
+.cta-row{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:14px;width:100%}
+.cta-help{font-size:.82rem;color:var(--mu);font-family:'Space Mono',monospace}
+.cta-btn{
+  background:var(--teal);color:#000;font-family:'Syne',sans-serif;font-weight:700;
+  font-size:.97rem;padding:14px 24px;border-radius:8px;letter-spacing:.04em;
+  transition:transform .12s,box-shadow .15s;display:flex;align-items:center;gap:8px;
+}
+.cta-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(63,230,208,.25)}
+.cta-btn:disabled{opacity:.3;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* PANTALLA 2: MAPA */
+#map{width:100%;height:100%;background:#0a0a0a}
+.leaflet-container{background:#0a0a0a;font-family:'DM Sans',sans-serif}
+.leaflet-tile{filter:invert(.92) hue-rotate(180deg) brightness(.85) saturate(.3) contrast(1.15)}
+.leaflet-control-attribution{background:rgba(8,8,8,.85)!important;color:var(--mu)!important;font-size:.55rem!important;border:1px solid var(--br2)}
+.leaflet-control-attribution a{color:var(--teal)!important}
+.leaflet-control-zoom{border:1px solid var(--br2)!important;background:rgba(8,8,8,.92)!important;backdrop-filter:blur(4px)}
+.leaflet-control-zoom a{background:transparent!important;color:var(--mu)!important;border-bottom:1px solid var(--br2)!important}
+.leaflet-control-zoom a:hover{background:var(--br)!important;color:var(--tx)!important}
+.leaflet-popup-content-wrapper{background:#0d0d0d!important;color:var(--tx)!important;border:1px solid var(--br2)!important;border-radius:10px!important}
+.leaflet-popup-tip{background:#0d0d0d!important;border:1px solid var(--br2)!important}
+
+/* PANTALLA 2: nuevo layout — cinta superior + sidebar derecha 360px */
+#screen2{display:flex;flex-direction:column}
+
+/* Cinta superior con resumen del caso */
+.map-topbar{
+  flex:0 0 auto;height:48px;background:#080808;border-bottom:1px solid var(--br);
+  display:flex;align-items:center;padding:0 18px;gap:14px;
+}
+.map-topbar .mt-back{
+  color:var(--teal);cursor:pointer;font-family:'Space Mono',monospace;font-size:.7rem;
+  letter-spacing:.05em;display:flex;align-items:center;gap:6px;
+  padding:6px 10px;border-radius:5px;transition:background .15s;
+}
+.map-topbar .mt-back:hover{background:rgba(63,230,208,.08)}
+.mt-divider{width:1px;height:20px;background:var(--br2)}
+.mt-info{font-size:.7rem;color:var(--tx);font-family:'Space Mono',monospace;letter-spacing:.05em;font-weight:700}
+.mt-info b{font-weight:700}
+/* Colores oficiales DGT para la letra de etiqueta */
+.mt-badge{font-weight:700;letter-spacing:.05em}
+.mt-badge.badge-0{color:#1e6fe6}    /* Cero emisiones — azul */
+.mt-badge.badge-eco{
+  background:linear-gradient(90deg,#1e6fe6 0 50%, #2cb24c 50% 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.mt-badge.badge-c{color:#2cb24c}    /* C — verde */
+.mt-badge.badge-b{color:#f5c518}    /* B — amarillo */
+.mt-badge.badge-na{color:var(--mu)} /* Sin etiqueta — gris */
+.mt-counts{margin-left:auto;display:flex;align-items:center;gap:14px;font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.05em}
+.mt-count{display:flex;align-items:center;gap:6px;color:var(--mu)}
+.mt-count-dot{width:8px;height:8px;border-radius:50%}
+.mt-count b{color:var(--tx);font-weight:600}
+
+/* Body con mapa + sidebar */
+.map-body{flex:1;display:flex;min-height:0;position:relative}
+
+/* Mapa */
+.map-area{flex:1;position:relative;min-width:0}
+
+/* Sidebar derecha */
+.sidebar{
+  flex:0 0 360px;width:360px;background:#080808;border-left:1px solid var(--br);
+  display:flex;flex-direction:column;min-height:0;
+}
+
+/* Cabecera de sidebar (modo lista vs modo detalle) */
+.sb-header{flex:0 0 auto;padding:14px 16px;border-bottom:1px solid var(--br)}
+.sb-title{
+  font-family:'Syne',sans-serif;font-weight:700;font-size:.7rem;
+  letter-spacing:.18em;color:var(--mu);text-transform:uppercase;
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;
+}
+.sb-title-count{color:var(--teal);font-family:'Space Mono',monospace}
+
+/* Buscador */
+.sb-search{position:relative;display:flex;align-items:center}
+.sb-search-input{
+  width:100%;background:rgba(255,255,255,.04);border:1px solid var(--br2);border-radius:6px;
+  padding:8px 30px 8px 30px;color:var(--tx);font-size:.78rem;
+  font-family:'DM Sans',sans-serif;transition:border-color .15s,background .15s;
+}
+.sb-search-input::placeholder{color:var(--mu2)}
+.sb-search-input:focus{border-color:var(--teal);background:rgba(63,230,208,.04);outline:none}
+.sb-search-icon{
+  position:absolute;left:10px;top:50%;transform:translateY(-50%);
+  color:var(--mu);font-size:.85rem;pointer-events:none;
+}
+.sb-search-clear{
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  width:18px;height:18px;border-radius:50%;background:var(--br2);color:var(--mu);
+  font-size:.65rem;display:none;align-items:center;justify-content:center;cursor:pointer;
+}
+.sb-search-clear:hover{background:var(--br);color:var(--tx)}
+.sb-search-clear.visible{display:flex}
+
+/* Filtros chips */
+.sb-filters{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.sb-chip{
+  font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.08em;
+  padding:4px 9px;border-radius:4px;border:1px solid;cursor:pointer;
+  display:flex;align-items:center;gap:5px;text-transform:uppercase;
+  transition:opacity .15s,background .15s;
+}
+.sb-chip-dot{width:7px;height:7px;border-radius:50%}
+.sb-chip.libre{color:var(--grn);border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.08)}
+.sb-chip.libre .sb-chip-dot{background:var(--grn)}
+.sb-chip.cond{color:var(--amb);border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.08)}
+.sb-chip.cond .sb-chip-dot{background:var(--amb)}
+.sb-chip.proh{color:var(--red);border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.08)}
+.sb-chip.proh .sb-chip-dot{background:var(--red)}
+.sb-chip.na{color:var(--mu);border-color:var(--br2);background:rgba(255,255,255,.03)}
+.sb-chip.na .sb-chip-dot{background:#6b7280}
+.sb-chip.off{opacity:.32}
+
+/* Lista de ciudades */
+.sb-list{flex:1;overflow-y:auto;padding:6px 0}
+.sb-list::-webkit-scrollbar{width:5px}
+.sb-list::-webkit-scrollbar-thumb{background:var(--br2);border-radius:3px}
+
+.sb-region{border-bottom:1px solid var(--br)}
+.sb-region-head{
+  padding:9px 16px;display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;user-select:none;transition:background .12s;
+}
+.sb-region-head:hover{background:rgba(255,255,255,.02)}
+.sb-region-name{
+  font-family:'Syne',sans-serif;font-weight:600;font-size:.7rem;
+  letter-spacing:.12em;color:var(--tx);text-transform:uppercase;
+}
+.sb-region-meta{display:flex;align-items:center;gap:8px}
+.sb-region-count{font-family:'Space Mono',monospace;font-size:.6rem;color:var(--mu);letter-spacing:.05em}
+.sb-region-arrow{color:var(--mu);font-size:.7rem;transition:transform .2s}
+.sb-region.open .sb-region-arrow{transform:rotate(90deg)}
+
+.sb-region-body{display:none}
+.sb-region.open .sb-region-body{display:block}
+
+.sb-city{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 16px 8px 28px;cursor:pointer;
+  border-left:3px solid transparent;
+  transition:background .12s,border-color .12s;
+}
+.sb-city:hover{background:rgba(255,255,255,.03)}
+.sb-city.active{background:rgba(63,230,208,.06);border-left-color:var(--teal)}
+.sb-city-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;border:1.5px solid}
+.sb-city-dot.libre{background:rgba(16,185,129,.4);border-color:var(--grn)}
+.sb-city-dot.cond{background:rgba(245,158,11,.4);border-color:var(--amb)}
+.sb-city-dot.proh{background:rgba(239,68,68,.4);border-color:var(--red)}
+.sb-city-dot.na{background:rgba(107,114,128,.3);border-color:#6b7280}
+.sb-city-name{font-size:.8rem;color:var(--tx);font-family:'DM Sans',sans-serif;flex:1}
+.sb-city-zone{font-size:.6rem;color:var(--mu);font-family:'Space Mono',monospace;letter-spacing:.04em}
+
+.sb-empty{padding:30px 16px;text-align:center;color:var(--mu);font-size:.75rem;font-family:'Space Mono',monospace}
+
+/* MODO DETALLE de la sidebar (reemplaza la lista cuando hay zona seleccionada) */
+.sb-detail{display:none;flex:1;overflow-y:auto}
+.sb-detail::-webkit-scrollbar{width:5px}
+.sb-detail::-webkit-scrollbar-thumb{background:var(--br2);border-radius:3px}
+.sidebar.detail-mode .sb-list{display:none}
+.sidebar.detail-mode .sb-filters{display:none}
+.sidebar.detail-mode .sb-search{display:none}
+.sidebar.detail-mode .sb-title{display:none}
+.sidebar.detail-mode .sb-detail{display:flex;flex-direction:column}
+
+/* En modo detalle, la cabecera muestra back + nombre de zona */
+.sb-detail-back{
+  display:none;align-items:center;gap:8px;cursor:pointer;
+  color:var(--teal);font-family:'Space Mono',monospace;font-size:.7rem;
+  letter-spacing:.05em;padding:0 0 10px 0;
+}
+.sb-detail-back:hover{text-decoration:underline}
+.sidebar.detail-mode .sb-detail-back{display:flex}
+
+/* Estilos de detalle (reutilizados como rp-* dentro de la sidebar) */
+.rp-header{padding:14px 16px;border-bottom:1px solid var(--br)}
+.rp-status{
+  display:inline-flex;font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;
+  padding:4px 10px;border-radius:5px;border:1px solid;letter-spacing:-.01em;
+  text-transform:uppercase;
+}
+.rp-status.libre{color:var(--grn);border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.08)}
+.rp-status.cond{color:var(--amb);border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.08)}
+.rp-status.proh{color:var(--red);border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.08)}
+.rp-status.mixed{color:var(--teal);border-color:rgba(63,230,208,.4);background:rgba(63,230,208,.08)}
+.rp-status.na{color:var(--mu);border-color:var(--br2);background:rgba(255,255,255,.03)}
+.rp-city{font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;margin-top:8px;letter-spacing:-.02em;color:var(--tx)}
+.rp-zone{font-size:.62rem;color:var(--mu);font-family:'Space Mono',monospace;letter-spacing:.1em;margin-top:2px;text-transform:uppercase}
+.rp-meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.rp-tag{
+  font-family:'Space Mono',monospace;font-size:.55rem;color:var(--teal);
+  background:rgba(63,230,208,.08);border:1px solid rgba(63,230,208,.3);
+  padding:2px 7px;border-radius:4px;letter-spacing:.04em;
+}
+
+.rp-body{padding:12px 16px;overflow-y:auto;flex:1}
+.rp-body::-webkit-scrollbar{width:5px}
+.rp-body::-webkit-scrollbar-thumb{background:var(--br2);border-radius:3px}
+
+.rp-rule{padding:10px 0;border-bottom:1px solid var(--br)}
+.rp-rule:last-child{border-bottom:none}
+.rp-rule-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.rp-rule-status{
+  font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.1em;
+  padding:2px 7px;border-radius:4px;border:1px solid;text-transform:uppercase;
+}
+.rp-rule-status.libre{color:var(--grn);border-color:rgba(16,185,129,.5);background:rgba(16,185,129,.1)}
+.rp-rule-status.cond{color:var(--amb);border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.1)}
+.rp-rule-status.proh{color:var(--red);border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.1)}
+.rp-rule-perfil{font-family:'Syne',sans-serif;font-weight:600;font-size:.75rem;color:var(--tx)}
+.rp-rule-cond{font-size:.7rem;color:var(--mu);line-height:1.55;margin-top:3px}
+.rp-rule-cond strong{color:var(--tx)}
+
+.rp-footer{padding:12px 16px;border-top:1px solid var(--br);background:rgba(255,255,255,.02)}
+.rp-link{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  background:rgba(63,230,208,.06);border:1px solid rgba(63,230,208,.25);
+  border-radius:7px;padding:9px 12px;color:var(--teal);font-size:.7rem;
+  font-family:'Space Mono',monospace;letter-spacing:.04em;text-decoration:none;
+}
+.rp-link:hover{background:rgba(63,230,208,.1)}
+
+/* Leyenda inferior izquierda del mapa */
+.map-legend{
+  position:absolute;bottom:18px;left:14px;z-index:500;
+  background:rgba(8,8,8,.92);border:1px solid var(--br2);border-radius:8px;
+  padding:9px 13px;backdrop-filter:blur(8px);
+  display:flex;flex-direction:column;gap:5px;
+}
+.legend-row{display:flex;align-items:center;gap:9px;font-size:.62rem;color:var(--mu);font-family:'Space Mono',monospace}
+.legend-dot{width:10px;height:10px;border-radius:50%;border:2px solid}
+
+@media (max-width:980px){
+  .sidebar{flex:0 0 320px;width:320px}
+}
+@media (max-width:780px){
+  .perfil-l1{grid-template-columns:1fr}
+  .veh-grid{grid-template-columns:repeat(2,1fr)}
+  .form-h1{font-size:1.9rem}
+  .map-body{flex-direction:column}
+  .sidebar{flex:0 0 50%;width:100%;border-left:none;border-top:1px solid var(--br)}
+  .map-area{flex:0 0 50%}
+  .mt-counts{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo-mark">R</div>
+  <div>
+    <div class="logo-text">RESTRICTA</div>
+    <div class="logo-sub">ZBE 2026</div>
+  </div>
+  <div class="brand-right">
+    <div>
+      <div class="logo-text" style="text-align:right">IMPULSO BY PONS</div>
+      <div class="logo-sub" style="text-align:right">THINKING MOBILITY</div>
+    </div>
+  </div>
+  <div class="step-indicator" style="display:none">
+    <span class="step-dot active" id="dot1"></span>
+    <span>1</span>
+    <span class="step-dot" id="dot2"></span>
+    <span>2</span>
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- ─────────────── PANTALLA 1: FORM ─────────────── -->
+  <div class="screen" id="screen1">
+    <div class="form-wrap">
+      <div class="form-card">
+        <div class="form-top-area">
+          <div class="form-intro">
+            <div class="form-h1">Tu vehículo, tu perfil.</div>
+            <div class="form-sub">Cuéntanos cómo vas a moverte. Después te enseñamos por dónde puedes circular.</div>
+          </div>
+          <div class="summaries-row" id="summaries-row"></div>
+        </div>
+
+        <div class="form-middle-area">
+
+        <!-- STEP 1: ETIQUETA DGT (matrícula o directa) -->
+        <div class="step visible" data-step="1">
+          <div class="step-summary" data-summary-for="1">
+            <span class="ss-text">✓ Etiqueta · <strong id="sum-badge">—</strong></span>
+            <button class="ss-edit" data-edit="1">EDITAR</button>
+          </div>
+          <div class="field-label">— 1 · Etiqueta DGT</div>
+          <div class="field-hint">Si la sabes, selecciónala directamente. Si no, calcúlala desde tu matrícula.</div>
+
+          <div class="entry-tabs">
+            <button class="entry-tab active" data-pane="pane-matricula">📋 Por matrícula</button>
+            <button class="entry-tab" data-pane="pane-directa">🏷️ Sé mi etiqueta</button>
+          </div>
+
+          <div class="entry-pane active" id="pane-matricula">
+            <div class="plate">
+              <div class="plate-eu"><div class="stars">★★★</div><div>E</div></div>
+              <input class="plate-input" id="plate-input" placeholder="0000 AAA" maxlength="8">
+            </div>
+            <div class="plate-info" id="plate-info"></div>
+
+            <button class="dgt-btn" id="dgt-btn" disabled>
+              <span class="dgt-btn-icon">↗</span>
+              <span class="dgt-btn-text">CONSULTAR EN SEDE DGT</span>
+            </button>
+            <div class="dgt-help">
+              Se abrirá una ventana lateral con la sede oficial. Pega tu matrícula con <kbd>Ctrl</kbd>+<kbd>V</kbd>, resuelve el CAPTCHA y vuelve aquí.
+            </div>
+
+            <div class="dgt-step15" id="dgt-step15">
+              <div class="dgt-step15-h">
+                <span class="dgt-step15-num">1.5</span>
+                <span class="dgt-step15-title">¿Qué etiqueta te ha salido?</span>
+              </div>
+              <div class="label-grid">
+                <div class="lbl-card" data-badge="0" data-from="dgt"><div class="lbl-circle l-0">0</div><div class="lbl-name">CERO</div></div>
+                <div class="lbl-card" data-badge="ECO" data-from="dgt"><div class="lbl-circle l-eco">ECO</div><div class="lbl-name">ECO</div></div>
+                <div class="lbl-card" data-badge="C" data-from="dgt"><div class="lbl-circle l-c">C</div><div class="lbl-name">C</div></div>
+                <div class="lbl-card" data-badge="B" data-from="dgt"><div class="lbl-circle l-b">B</div><div class="lbl-name">B</div></div>
+                <div class="lbl-card" data-badge="SIN ETIQUETA" data-from="dgt"><div class="lbl-circle l-na">A</div><div class="lbl-name">SIN</div></div>
+              </div>
+            </div>
+
+            <div id="auto-result-msg" style="display:none"></div>
+            <div class="fuel-grid" id="fuel-grid" style="display:none"></div>
+          </div>
+
+          <div class="entry-pane" id="pane-directa">
+            <div class="field-hint">Selecciona la etiqueta de tu vehículo:</div>
+            <div class="label-grid">
+              <div class="lbl-card" data-badge="0"><div class="lbl-circle l-0">0</div><div class="lbl-name">CERO</div></div>
+              <div class="lbl-card" data-badge="ECO"><div class="lbl-circle l-eco">ECO</div><div class="lbl-name">ECO</div></div>
+              <div class="lbl-card" data-badge="C"><div class="lbl-circle l-c">C</div><div class="lbl-name">C</div></div>
+              <div class="lbl-card" data-badge="B"><div class="lbl-circle l-b">B</div><div class="lbl-name">B</div></div>
+              <div class="lbl-card" data-badge="SIN ETIQUETA"><div class="lbl-circle l-na">A</div><div class="lbl-name">SIN</div></div>
+            </div>
+            <div class="field-hint" style="margin-top:6px">
+              ¿Dudas? <a href="https://sede.dgt.gob.es/es/vehiculos/informacion-de-vehiculos/distintivo-ambiental/" target="_blank" style="color:var(--teal);text-decoration:none">Consulta en la sede DGT ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: TIPO DE VEHÍCULO -->
+        <div class="step" data-step="2">
+          <div class="step-summary" data-summary-for="2">
+            <span class="ss-text">✓ Vehículo · <strong id="sum-vehicle">—</strong></span>
+            <button class="ss-edit" data-edit="2">EDITAR</button>
+          </div>
+          <div class="field-label">— 2 · Tipo de vehículo</div>
+          <div class="veh-grid">
+            <button class="veh-btn" data-veh="turismo"><span class="veh-ico">🚗</span><span class="veh-name">Turismo</span><span class="veh-sub">Particular</span></button>
+            <button class="veh-btn" data-veh="moto"><span class="veh-ico">🏍️</span><span class="veh-name">Moto</span><span class="veh-sub">L1 – L7</span></button>
+            <button class="veh-btn" data-veh="furgoneta"><span class="veh-ico">🚐</span><span class="veh-name">Furgoneta</span><span class="veh-sub">N1 / N2</span></button>
+            <button class="veh-btn" data-veh="otros"><span class="veh-ico">🚛</span><span class="veh-name">Otros</span><span class="veh-sub">Camión · autobús</span></button>
+          </div>
+          <div class="peso-block" id="otros-tipo-block">
+            <div class="field-label" style="font-size:.55rem">— Tipo</div>
+            <div class="peso-grid" style="grid-template-columns:1fr 1fr">
+              <button class="peso-btn" data-otros="camion"><span class="peso-rng">Camión</span>Mercancías N2/N3</button>
+              <button class="peso-btn" data-otros="autobus"><span class="peso-rng">Autobús</span>Viajeros M2/M3</button>
+            </div>
+          </div>
+          <div class="peso-block" id="peso-block">
+            <div class="field-label" style="font-size:.55rem">— Masa máxima autorizada</div>
+            <div class="peso-grid" id="peso-grid"></div>
+          </div>
+        </div>
+
+        <!-- STEP 3: PERFIL -->
+        <div class="step" data-step="3">
+          <div class="step-summary" data-summary-for="3">
+            <span class="ss-text">✓ Situación · <strong id="sum-perfil">—</strong></span>
+            <button class="ss-edit" data-edit="3">EDITAR</button>
+          </div>
+          <div class="field-label">— 3 · Tu situación</div>
+          <div class="field-hint">Empieza eligiendo si vas como particular o si tienes alguna situación especial.</div>
+          <div class="perfil-l1">
+            <button class="perfil-card" data-perfil-l1="particular">
+              <div class="pc-h">Particular · uso privado</div>
+              <div class="pc-d">Coche personal, ningún caso especial. La opción habitual.</div>
+            </button>
+            <button class="perfil-card" data-perfil-l1="otros">
+              <div class="pc-h">Otra situación</div>
+              <div class="pc-d">Residencia, profesional, servicio público u otros permisos.</div>
+            </button>
+          </div>
+          <div class="perfil-l2" id="perfil-l2"></div>
+        </div>
+
+        </div><!-- /form-middle-area -->
+
+        <div class="form-bottom-area">
+          <div class="cta-row" id="cta-row">
+            <span class="cta-help" id="cta-help"></span>
+            <button class="cta-btn" id="cta-btn" disabled>VER EN EL MAPA →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────── PANTALLA 2: MAPA + SIDEBAR ─────────────── -->
+  <div class="screen hidden" id="screen2">
+
+    <!-- Cinta superior con resumen del caso -->
+    <div class="map-topbar">
+      <span class="mt-back" id="back-btn">← Editar perfil</span>
+      <span class="mt-divider"></span>
+      <span class="mt-info" id="mt-info">cargando…</span>
+      <div class="mt-counts" id="mt-counts"></div>
+    </div>
+
+    <!-- Body: mapa + sidebar -->
+    <div class="map-body">
+      <div class="map-area">
+        <div id="map"></div>
+        <div class="map-legend">
+          <div class="legend-row"><span class="legend-dot" style="border-color:var(--grn);background:rgba(16,185,129,.3)"></span>LIBRE</div>
+          <div class="legend-row"><span class="legend-dot" style="border-color:var(--amb);background:rgba(245,158,11,.3)"></span>CONDICIONADO</div>
+          <div class="legend-row"><span class="legend-dot" style="border-color:var(--red);background:rgba(239,68,68,.3)"></span>PROHIBIDO</div>
+        </div>
+      </div>
+
+      <aside class="sidebar" id="sidebar">
+
+        <!-- Cabecera con buscador, filtros y back en modo detalle -->
+        <div class="sb-header">
+          <div class="sb-detail-back" id="sb-detail-back">← Volver al listado</div>
+
+          <div class="sb-title">
+            <span>Ciudades</span>
+            <span class="sb-title-count" id="sb-title-count"></span>
+          </div>
+
+          <div class="sb-search">
+            <span class="sb-search-icon">⌕</span>
+            <input
+              type="text"
+              class="sb-search-input"
+              id="sb-search-input"
+              placeholder="Buscar ciudad…"
+              autocomplete="off"
+              spellcheck="false">
+            <span class="sb-search-clear" id="sb-search-clear">✕</span>
+          </div>
+
+          <div class="sb-filters" id="sb-filters">
+            <span class="sb-chip libre" data-filter="LIBRE"><span class="sb-chip-dot"></span>Libre</span>
+            <span class="sb-chip cond" data-filter="CONDICIONADO"><span class="sb-chip-dot"></span>Cond.</span>
+            <span class="sb-chip proh" data-filter="PROHIBIDO"><span class="sb-chip-dot"></span>Prohib.</span>
+            <span class="sb-chip na" data-filter="NA"><span class="sb-chip-dot"></span>Sin datos</span>
+          </div>
+        </div>
+
+        <!-- Lista por regiones -->
+        <div class="sb-list" id="sb-list"></div>
+
+        <!-- Vista de detalle (oculta hasta que se selecciona ciudad) -->
+        <div class="sb-detail">
+          <div class="rp-header" id="rp-header"></div>
+          <div class="rp-body" id="rp-body"></div>
+          <div class="rp-footer" id="rp-footer"></div>
+        </div>
+
+      </aside>
+    </div>
+  </div>
+
+</div>
+
+<script src="dataset.js"></script>
+<script>
+// DATASET externo: crea un archivo dataset.js con:
+// const DATASET = { ... };
+
+
+const state = {
+  plate: '',
+  fuel: null,
+  badge: null,
+  vehicle: null,
+  otrosTipo: null,    // 'camion' | 'autobus' (cuando vehicle = 'otros')
+  peso: null,         // {min, max}
+  perfilL1: null,     // 'particular' | 'otros'
+  perfiles: new Set(['particular']),  // siempre incluye 'particular'
+  zonaSeleccionada: null,
+};
+
+// ─── PLATE → AÑO ───
+const PLATE_TIMELINE = [
+  ['BBB',2000,9],['CFK',2004,1],['DKL',2006,7],['FFF',2008,7],['GBB',2010,1],
+  ['HCH',2013,1],['JCD',2015,5],['KFD',2018,1],['LCH',2020,7],['MFC',2023,1],
+  ['MTT',2024,7],['NPP',2026,1]
+];
+const VALID = 'BCDFGHJKLMNPRSTVWXYZ';
+function l2n(s){let n=0;for(const c of s){const i=VALID.indexOf(c);if(i<0)return -1;n=n*20+i}return n}
+function estimYear(p){
+  p=p.replace(/[\s-]/g,'').toUpperCase();
+  const m=p.match(/^(\d{4})([A-Z]{3})$/);if(!m)return null;
+  const lets=m[2];const n=l2n(lets);if(n<0)return null;
+  let r=null;for(const ref of PLATE_TIMELINE){if(n>=l2n(ref[0]))r=ref;else break}return r;
+}
+function calcEtiqueta(year,fuel){
+  if(!year||!fuel)return null;
+  if(fuel==='electrico'||fuel==='hibrido-enchufable')return '0';
+  if(fuel==='hibrido'||fuel==='gas')return 'ECO';
+  if(fuel==='gasolina')return year>=2006?'C':(year>=2000?'B':'SIN ETIQUETA');
+  if(fuel==='diesel')return year>=2014?'C':(year>=2006?'B':'SIN ETIQUETA');
+  return null;
+}
+
+// ─── HANDLERS PANTALLA 1 ───
+
+const plateInput = document.getElementById('plate-input');
+const plateInfo = document.getElementById('plate-info');
+const dgtBtn = document.getElementById('dgt-btn');
+const dgtStep15 = document.getElementById('dgt-step15');
+
+plateInput.addEventListener('input', e => {
+  e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
+  state.plate = e.target.value;
+  // Validación de matrícula española actual: 4 dígitos + 3 letras válidas
+  const valida = /^\d{4}[BCDFGHJKLMNPRSTVWXYZ]{3}$/.test(state.plate);
+  const yearInfo = estimYear(state.plate);
+  if (valida && yearInfo) {
+    plateInfo.textContent = `📅 Matriculación estimada: ${String(yearInfo[2]).padStart(2,'0')}/${yearInfo[1]}`;
+    plateInfo.classList.add('visible');
+    dgtBtn.disabled = false;
+  } else if (state.plate.length > 0) {
+    plateInfo.classList.remove('visible');
+    dgtBtn.disabled = true;
+  } else {
+    plateInfo.classList.remove('visible');
+    dgtBtn.disabled = true;
+    dgtStep15.classList.remove('visible');  // si borra, ocultamos selector
+  }
+  updateCTA();
+});
+
+// Botón "Consultar en DGT" → copia matrícula + abre popup lateral + revela step 1.5
+async function copyToClipboard(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    try { await navigator.clipboard.writeText(text); return true; } catch(e){}
+  }
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position='fixed';ta.style.left='-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  } catch(e) { return false; }
+}
+
+dgtBtn.addEventListener('click', async () => {
+  if (!state.plate || dgtBtn.disabled) return;
+
+  // Copiar al portapapeles
+  await copyToClipboard(state.plate);
+
+  // Abrir popup lateral con la sede DGT
+  const w = 600, h = 800;
+  const left = window.screen.availWidth - w - 20;  // pegado a la derecha
+  const top = 60;
+  const popupOpts = `width=${w},height=${h},left=${left},top=${top},scrollbars=yes,resizable=yes,location=yes,toolbar=no,menubar=no`;
+  const popup = window.open(
+    'https://sede.dgt.gob.es/es/vehiculos/informacion-de-vehiculos/distintivo-ambiental/',
+    'dgt-popup',
+    popupOpts
+  );
+  if (!popup) {
+    alert('Tu navegador ha bloqueado el popup. Permite ventanas emergentes para sede.dgt.gob.es y vuelve a pulsar.');
+    return;
+  }
+  popup.focus();
+
+  // Revelar step 1.5
+  dgtStep15.classList.add('visible');
+});
+
+// Selector de etiqueta (compartido para tab "Sé mi etiqueta" y step 1.5)
+document.querySelectorAll('.lbl-card').forEach(c => {
+  c.addEventListener('click', () => {
+    document.querySelectorAll('.lbl-card').forEach(x => x.classList.remove('active'));
+    c.classList.add('active');
+    state.badge = c.dataset.badge;
+    // Si es desde step 1.5 (pane matrícula), también marca el del pane directa para sincronizar
+    document.querySelectorAll('.lbl-card').forEach(x => {
+      if (x.dataset.badge === state.badge) x.classList.add('active');
+    });
+    updateCTA();
+  });
+});
+
+// TABS matrícula vs etiqueta directa
+document.querySelectorAll('.entry-tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.entry-tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.entry-pane').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.pane).classList.add('active');
+  });
+});
+
+// VEHÍCULO
+const otrosTipoBlock = document.getElementById('otros-tipo-block');
+const pesoBlock = document.getElementById('peso-block');
+const pesoGrid = document.getElementById('peso-grid');
+
+document.querySelectorAll('.veh-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.veh-btn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    state.vehicle = b.dataset.veh;
+    state.otrosTipo = null;
+    state.peso = null;
+    document.querySelectorAll('[data-otros]').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.peso-btn[data-peso]').forEach(x => x.classList.remove('active'));
+
+    if (state.vehicle === 'otros') {
+      otrosTipoBlock.classList.add('visible');
+      pesoBlock.classList.remove('visible');
+    } else if (state.vehicle === 'furgoneta') {
+      otrosTipoBlock.classList.remove('visible');
+      mostrarPesoFurgoneta();
+    } else {
+      otrosTipoBlock.classList.remove('visible');
+      pesoBlock.classList.remove('visible');
+      state.peso = {min:0, max:3500};   // turismo/moto fijo
+    }
+    updateCTA();
+  });
+});
+
+document.querySelectorAll('[data-otros]').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('[data-otros]').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    state.otrosTipo = b.dataset.otros;
+    mostrarPesoOtros();
+    updateCTA();
+  });
+});
+
+function mostrarPesoFurgoneta() {
+  pesoGrid.innerHTML = `
+    <button class="peso-btn" data-peso="0-3500"><span class="peso-rng">≤ 3.500 kg</span>Furgoneta común</button>
+    <button class="peso-btn" data-peso="3500-7500"><span class="peso-rng">3.500 – 7.500</span>Requiere C1</button>
+  `;
+  pesoBlock.classList.add('visible');
+  bindPesoBtns();
+}
+
+function mostrarPesoOtros() {
+  pesoGrid.innerHTML = `
+    <button class="peso-btn" data-peso="0-3500"><span class="peso-rng">≤ 3.500 kg</span>Ligero</button>
+    <button class="peso-btn" data-peso="3500-7500"><span class="peso-rng">3.500 – 7.500</span>Mediano</button>
+    <button class="peso-btn" data-peso="7500-"><span class="peso-rng">&gt; 7.500 kg</span>Pesado · BOE 2026</button>
+  `;
+  pesoBlock.classList.add('visible');
+  bindPesoBtns();
+}
+
+function bindPesoBtns() {
+  document.querySelectorAll('.peso-btn[data-peso]').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.peso-btn[data-peso]').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      const [mi, ma] = b.dataset.peso.split('-');
+      state.peso = {min: parseInt(mi)||0, max: ma ? parseInt(ma) : null};
+      updateCTA();
+    });
+  });
+}
+
+// PERFIL nivel 1
+document.querySelectorAll('[data-perfil-l1]').forEach(c => {
+  c.addEventListener('click', () => {
+    document.querySelectorAll('[data-perfil-l1]').forEach(x => x.classList.remove('active'));
+    c.classList.add('active');
+    state.perfilL1 = c.dataset.perfilL1;
+    state.perfiles = new Set(['particular']);
+    if (state.perfilL1 === 'otros') {
+      mostrarPerfilesL2();
+    } else {
+      document.getElementById('perfil-l2').classList.remove('visible');
+    }
+    updateCTA();
+  });
+});
+
+function mostrarPerfilesL2() {
+  const cont = document.getElementById('perfil-l2');
+  cont.classList.add('visible');
+  const grupos = DATASET.catalogos.grupos_perfil.filter(g => g.id !== 'particular');
+  let html = '';
+  for (const g of grupos) {
+    const perfiles = DATASET.catalogos.perfiles.filter(p => p.grupo === g.id).sort((a,b) => a.orden - b.orden);
+    // Resumen de perfiles entre paréntesis (versión corta)
+    const resumen = perfiles.map(p => p.nombre.split(' (')[0].split(' ·')[0]).join(' · ');
+    html += `<div class="grupo" data-grupo="${g.id}">
+      <div class="grupo-h">
+        <span class="grupo-title">${g.nombre}</span>
+        <span class="grupo-resumen">(${resumen})</span>
+        <span class="count" data-count>0</span>
+        <span class="chev">▶</span>
+      </div>
+      <div class="grupo-body">
+        <div class="perfil-checks">`;
+    for (const p of perfiles) {
+      html += `<div class="pcheck" data-perfil="${p.id}">
+        <div class="pcheck-box"></div>
+        <div>
+          <div class="pcheck-name">${p.nombre}</div>
+          <div class="pcheck-desc">${p.descripcion}</div>
+        </div>
+      </div>`;
+    }
+    html += `</div></div></div>`;
+  }
+  cont.innerHTML = html;
+
+  // Click en grupo → expand/collapse
+  cont.querySelectorAll('.grupo-h').forEach(h => {
+    h.addEventListener('click', () => h.parentElement.classList.toggle('expanded'));
+  });
+  // Click en check
+  cont.querySelectorAll('.pcheck').forEach(p => {
+    p.addEventListener('click', (ev) => {
+      ev.stopPropagation();  // no propagar al grupo-h
+      p.classList.toggle('checked');
+      const pid = p.dataset.perfil;
+      if (state.perfiles.has(pid)) state.perfiles.delete(pid);
+      else state.perfiles.add(pid);
+      // Actualizar contador del grupo
+      const grupo = p.closest('.grupo');
+      const count = grupo.querySelectorAll('.pcheck.checked').length;
+      grupo.querySelector('[data-count]').textContent = count;
+      grupo.querySelector('[data-count]').style.opacity = count ? 1 : 0;
+      updateCTA();
+    });
+  });
+}
+
+function updateCTA() {
+  // Manejar la visibilidad de los steps según completitud
+  const step1Done = !!state.badge;
+  const step2Done = state.vehicle && state.peso && (state.vehicle !== 'otros' || state.otrosTipo);
+  const step3Done = !!state.perfilL1;
+
+  // STEP 1
+  const s1 = document.querySelector('[data-step="1"]');
+  s1.classList.toggle('locked', step1Done);
+  if (step1Done) {
+    document.getElementById('sum-badge').textContent = state.badge === 'SIN ETIQUETA' ? 'A · SIN ETIQUETA' : state.badge;
+  }
+
+  // STEP 2
+  const s2 = document.querySelector('[data-step="2"]');
+  if (step1Done) {
+    s2.classList.add('visible');
+    s2.classList.toggle('locked', step2Done);
+    if (step2Done) {
+      const v = state.vehicle === 'otros' ? state.otrosTipo : state.vehicle;
+      const p = state.peso.max ? `${state.peso.min}-${state.peso.max} kg` : `>${state.peso.min} kg`;
+      document.getElementById('sum-vehicle').textContent = `${v} · ${p}`;
+    }
+  } else {
+    s2.classList.remove('visible');
+    s2.classList.remove('locked');
+  }
+
+  // STEP 3
+  const s3 = document.querySelector('[data-step="3"]');
+  if (step2Done) {
+    s3.classList.add('visible');
+    s3.classList.toggle('locked', step3Done && state.perfilL1 === 'particular');
+    if (state.perfilL1) {
+      let txt = 'Particular';
+      if (state.perfilL1 === 'otros') {
+        const otros = Array.from(state.perfiles).filter(x => x !== 'particular');
+        if (otros.length === 0) txt = 'Otra situación (selecciona)';
+        else if (otros.length === 1) {
+          const p = DATASET.catalogos.perfiles.find(x => x.id === otros[0]);
+          txt = p?.nombre || otros[0];
+        } else txt = `${otros.length} perfiles seleccionados`;
+      }
+      document.getElementById('sum-perfil').textContent = txt;
+    }
+  } else {
+    s3.classList.remove('visible');
+    s3.classList.remove('locked');
+  }
+
+  // Mover los summaries a la fila de arriba
+  const row = document.getElementById('summaries-row');
+  row.innerHTML = '';
+  document.querySelectorAll('.step.locked .step-summary').forEach(sm => {
+    row.appendChild(sm.cloneNode(true));
+  });
+
+  // CTA - solo aparece visible cuando todo está completo
+  const ctaRow = document.getElementById('cta-row');
+  const ok = step1Done && step2Done && step3Done;
+  document.getElementById('cta-btn').disabled = !ok;
+  ctaRow.style.opacity = step2Done ? '1' : '0';
+  ctaRow.style.pointerEvents = step2Done ? 'auto' : 'none';
+  ctaRow.style.transition = 'opacity .3s';
+
+  document.getElementById('cta-help').textContent = ok ? '✓ Listo para consultar' : '';
+}
+
+// Click en botón EDITAR de un summary → desbloquear ese paso
+document.addEventListener('click', (e) => {
+  const editBtn = e.target.closest('.ss-edit');
+  if (!editBtn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const stepN = editBtn.dataset.edit;
+  const step = document.querySelector(`[data-step="${stepN}"]`);
+  step.classList.remove('locked');
+  step.classList.add('visible');
+  // Smooth scroll al paso reabierto
+  step.scrollIntoView({behavior: 'smooth', block: 'center'});
+});
+
+// CTA → ir al mapa
+document.getElementById('cta-btn').addEventListener('click', () => {
+  document.getElementById('screen1').classList.add('hidden');
+  document.getElementById('screen2').classList.remove('hidden');
+  document.getElementById('dot1').classList.remove('active');
+  document.getElementById('dot1').classList.add('done');
+  document.getElementById('dot2').classList.add('active');
+  setTimeout(initMap, 200);
+});
+
+document.getElementById('back-btn').addEventListener('click', () => {
+  document.getElementById('screen2').classList.add('hidden');
+  document.getElementById('screen1').classList.remove('hidden');
+  document.getElementById('dot2').classList.remove('active');
+  document.getElementById('dot1').classList.add('active');
+  document.getElementById('dot1').classList.remove('done');
+  // Resetear estado de la sidebar
+  document.getElementById('sidebar').classList.remove('detail-mode');
+  state.zonaSeleccionada = null;
+});
+
+// ─── MAPA ───
+let map = null;
+let markers = null;
+const geojsonCache = {};  // zona_id → GeoJSON ya cargado
+
+// Carga en paralelo todos los GeoJSON declarados en DATASET.zonas[i].geojson_url.
+// Falla silenciosamente por archivo (si uno no existe, esa zona usará circleMarker).
+async function loadGeojsons() {
+  const tareas = DATASET.zonas
+    .filter(z => z.geojson_url && !geojsonCache[z.id])
+    .map(async z => {
+      try {
+        const r = await fetch(z.geojson_url);
+        if (!r.ok) return;
+        geojsonCache[z.id] = await r.json();
+      } catch (e) {
+        console.warn(`No se pudo cargar GeoJSON de ${z.id}:`, e.message);
+      }
+    });
+  await Promise.all(tareas);
+}
+
+async function initMap() {
+  if (map) {
+    map.invalidateSize();
+    refreshMap();
+    return;
+  }
+  map = L.map('map', {center: [40.0, -3.7], zoom: 6, minZoom: 5, maxZoom: 16});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap · RESTRICTA', maxZoom: 19
+  }).addTo(map);
+  markers = L.layerGroup().addTo(map);
+  // Cargamos polígonos en background; pintamos markers ya
+  refreshMap();
+  loadGeojsons().then(() => refreshMap());
+  // El contenedor del mapa vive en un flex: forzar recálculo cuando Leaflet ya está listo
+  setTimeout(() => map.invalidateSize(), 50);
+}
+
+function tipoVehiculoEnDataset() {
+  if (state.vehicle === 'otros') return state.otrosTipo;
+  return state.vehicle;
+}
+
+function reglasMatch(zonaId) {
+  const tipoV = tipoVehiculoEnDataset();
+  const perfArr = Array.from(state.perfiles);
+  return DATASET.reglas.filter(r => {
+    if (r.zona_id !== zonaId) return false;
+    if (!r.etiquetas.includes(state.badge)) return false;
+    if (r.tipo_vehiculo !== tipoV) return false;
+    // Tonelaje match
+    const ton_min = r.tonelaje_min || 0;
+    const ton_max = r.tonelaje_max == null ? 999999 : r.tonelaje_max;
+    const my_min = state.peso.min;
+    const my_max = state.peso.max == null ? 999999 : state.peso.max;
+    if (my_max <= ton_min || my_min >= ton_max) return false;
+    // Perfil
+    if (!perfArr.includes(r.perfil)) return false;
+    return true;
+  });
+}
+
+function efectoZona(zonaId) {
+  const reglas = reglasMatch(zonaId);
+  if (!reglas.length) return null;
+  if (reglas.some(r => r.efecto === 'LIBRE')) return 'LIBRE';
+  if (reglas.some(r => r.efecto === 'CONDICIONADO')) return 'CONDICIONADO';
+  return 'PROHIBIDO';
+}
+
+function colorEfecto(e) {
+  return {LIBRE:'#10b981', CONDICIONADO:'#f59e0b', PROHIBIDO:'#ef4444'}[e] || '#6b7280';
+}
+
+function refreshMap() {
+  markers.clearLayers();
+  zonaMarkers = {};  // reset índice id→marker (o capa)
+  let nLibre=0, nCond=0, nProh=0, nNa=0;
+  for (const z of DATASET.zonas) {
+    const e = efectoZona(z.id);
+    if (e === 'LIBRE') nLibre++;
+    else if (e === 'CONDICIONADO') nCond++;
+    else if (e === 'PROHIBIDO') nProh++;
+    else nNa++;
+    const color = colorEfecto(e);
+
+    let layer;
+    const gj = geojsonCache[z.id];
+    if (gj) {
+      // Polígono real de la ZBE
+      layer = L.geoJSON(gj, {
+        style: {
+          color, fillColor: color, fillOpacity: .35, weight: 2.5
+        }
+      });
+      layer.bindTooltip(z.nombre_completo, {sticky: true});
+      layer.on('click', () => abrirZona(z));
+    } else if (z.lat != null && z.lng != null) {
+      // Fallback: punto
+      layer = L.circleMarker([z.lat, z.lng], {
+        color, fillColor: color, fillOpacity: .55, weight: 2.5, radius: 11
+      });
+      layer.bindTooltip(z.nombre_completo, {direction:'top'});
+      layer.on('click', () => abrirZona(z));
+    } else {
+      continue; // sin geometría no se pinta
+    }
+
+    markers.addLayer(layer);
+    zonaMarkers[z.id] = layer;
+  }
+
+  // Cinta superior: resumen del caso + contadores
+  const perfilesNombres = Array.from(state.perfiles)
+    .filter(p => p !== 'particular')
+    .map(p => DATASET.catalogos.perfiles.find(x => x.id === p)?.nombre)
+    .filter(Boolean);
+  const pesoStr = `${state.peso.min}${state.peso.max?'-'+state.peso.max:'+'} kg`;
+  const perfilesExtra = perfilesNombres.length ? ` <span style="color:var(--teal)">+ ${perfilesNombres.join(', ')}</span>` : '';
+  // Etiqueta DGT con su color oficial
+  const badgeClassMap = {'0':'badge-0','ECO':'badge-eco','C':'badge-c','B':'badge-b','SIN ETIQUETA':'badge-na'};
+  const badgeCls = badgeClassMap[state.badge] || 'badge-na';
+  const badgeHtml = `<b class="mt-badge ${badgeCls}">${state.badge}</b>`;
+  document.getElementById('mt-info').innerHTML =
+    `${badgeHtml} · ${tipoVehiculoEnDataset()} · ${pesoStr}${perfilesExtra}`;
+
+  document.getElementById('mt-counts').innerHTML = `
+    <span class="mt-count"><span class="mt-count-dot" style="background:var(--grn)"></span><b>${nLibre}</b> libres</span>
+    <span class="mt-count"><span class="mt-count-dot" style="background:var(--amb)"></span><b>${nCond}</b> cond.</span>
+    <span class="mt-count"><span class="mt-count-dot" style="background:var(--red)"></span><b>${nProh}</b> prohib.</span>
+  `;
+
+  // Refrescar sidebar
+  renderSidebar();
+}
+
+function abrirZona(z) {
+  state.zonaSeleccionada = z;
+  const reglas = reglasMatch(z.id);
+  // Ordenar: LIBRE > COND > PROHIB
+  const ord = {LIBRE:0, CONDICIONADO:1, PROHIBIDO:2};
+  reglas.sort((a,b) => ord[a.efecto] - ord[b.efecto]);
+
+  const ciudad = DATASET.ciudades.find(c => c.id === z.ciudad_id);
+  const efGlobal = efectoZona(z.id);
+  const cls = efGlobal === 'LIBRE' ? 'libre' : (efGlobal === 'PROHIBIDO' ? 'proh' : (efGlobal === 'CONDICIONADO' ? 'cond' : 'mixed'));
+
+  // Header
+  document.getElementById('rp-header').innerHTML = `
+    <div class="rp-status ${cls}">${efGlobal || 'SIN DATOS'}</div>
+    <div class="rp-city">${ciudad?.nombre || z.nombre_completo}</div>
+    <div class="rp-zone">${z.nombre !== 'ZBE' ? z.nombre : 'ZBE general'} · ${z.vigencia}</div>
+    <div class="rp-meta">
+      <span class="rp-tag">${state.badge}</span>
+      <span class="rp-tag">${tipoVehiculoEnDataset()}</span>
+      <span class="rp-tag">${state.peso.min}${state.peso.max?'-'+state.peso.max:'+'} kg</span>
+    </div>
+  `;
+
+  // Body: una entrada por perfil con CONDICIONADO o LIBRE
+  // PROHIBIDO solo se muestra si es la única opción para el particular
+  let bodyHtml = '';
+  if (reglas.length === 0) {
+    bodyHtml = `<div style="padding:20px 0;color:var(--mu);font-size:.78rem;text-align:center">
+      No hay datos para esta combinación.
+    </div>`;
+  } else {
+    // Agrupar por perfil
+    const porPerfil = {};
+    for (const r of reglas) {
+      if (!porPerfil[r.perfil]) porPerfil[r.perfil] = r;
+    }
+    // Ordenar perfiles según el orden del catálogo
+    const orden = DATASET.catalogos.perfiles.reduce((acc,p) => (acc[p.id]=p.orden,acc), {});
+    const perfilesOrdenados = Object.keys(porPerfil).sort((a,b) => orden[a]-orden[b]);
+
+    for (const pid of perfilesOrdenados) {
+      const r = porPerfil[pid];
+      const perfilInfo = DATASET.catalogos.perfiles.find(x => x.id === pid);
+      const cls2 = r.efecto === 'LIBRE' ? 'libre' : (r.efecto === 'PROHIBIDO' ? 'proh' : 'cond');
+
+      // Si solo hay particular y es PROHIBIDO, mostrarlo
+      // Si hay alternativas mejores, mostrar todas
+      let condicionesHtml = '';
+      if (r.efecto === 'CONDICIONADO' && r.condiciones.length) {
+        condicionesHtml = '<div class="rp-rule-cond">' +
+          r.condiciones.map(c => '· ' + c.descripcion).join('<br>') + '</div>';
+      } else if (r.efecto === 'CONDICIONADO') {
+        condicionesHtml = '<div class="rp-rule-cond"><em>Acceso condicionado a verificar en ordenanza local.</em></div>';
+      } else if (r.efecto === 'LIBRE') {
+        condicionesHtml = '<div class="rp-rule-cond">Sin restricciones para este perfil.</div>';
+      } else if (r.efecto === 'PROHIBIDO') {
+        condicionesHtml = '';
+      }
+
+      bodyHtml += `<div class="rp-rule">
+        <div class="rp-rule-head">
+          <span class="rp-rule-status ${cls2}">${r.efecto}</span>
+          <span class="rp-rule-perfil">${perfilInfo?.nombre || pid}</span>
+        </div>
+        ${condicionesHtml}
+      </div>`;
+    }
+  }
+
+  document.getElementById('rp-body').innerHTML = bodyHtml;
+
+  // Footer
+  let footerHtml = '';
+  if (ciudad?.ordenanza_url) {
+    footerHtml = `<a class="rp-link" href="${ciudad.ordenanza_url}" target="_blank">
+      <span>📜 ${ciudad.ordenanza_titulo || 'Ordenanza municipal'}</span>
+      <span>↗</span>
+    </a>`;
+  }
+  document.getElementById('rp-footer').innerHTML = footerHtml;
+
+  // Modo detalle de la sidebar
+  document.getElementById('sidebar').classList.add('detail-mode');
+  // Marcar la ciudad activa en la lista (para cuando vuelvas atrás)
+  document.querySelectorAll('.sb-city').forEach(el => el.classList.remove('active'));
+  const cityEl = document.querySelector(`.sb-city[data-zona-id="${z.id}"]`);
+  if (cityEl) cityEl.classList.add('active');
+
+  // Vuela el mapa: encuadra al polígono si existe, si no centra en lat/lng
+  const layer = zonaMarkers[z.id];
+  if (layer && typeof layer.getBounds === 'function' && layer.getBounds().isValid && layer.getBounds().isValid()) {
+    map.fitBounds(layer.getBounds(), {padding: [40, 40], maxZoom: 14, animate: true});
+  } else if (z.lat && z.lng) {
+    map.setView([z.lat, z.lng], Math.max(map.getZoom(), 9), {animate: true});
+  }
+}
+
+// Volver de detalle a listado
+document.getElementById('sb-detail-back').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.remove('detail-mode');
+  state.zonaSeleccionada = null;
+});
+
+// ─── SIDEBAR: lista por regiones, búsqueda, filtros ───
+
+// Índice id_zona → marker (rellenado en refreshMap)
+let zonaMarkers = {};
+
+// Estado UI de la sidebar
+const sbState = {
+  query: '',
+  filtros: new Set(['LIBRE', 'CONDICIONADO', 'PROHIBIDO', 'NA']), // todos activos por defecto
+  regionesAbiertas: new Set(),  // regiones desplegadas
+  primeraRender: true,
+};
+
+// Normalización para búsqueda tolerante a acentos
+function normaliza(s) {
+  return (s || '').toString().toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .trim();
+}
+
+// Construye el árbol región → ciudades con su efecto computado
+function buildSidebarData() {
+  const q = normaliza(sbState.query);
+  const porRegion = {};
+
+  for (const ciudad of DATASET.ciudades) {
+    // Para cada ciudad, cogemos su zona principal (la primera)
+    const zonaId = ciudad.zonas && ciudad.zonas[0];
+    const zona = zonaId ? DATASET.zonas.find(z => z.id === zonaId) : null;
+    const ef = zona ? efectoZona(zona.id) : null;
+    const efKey = ef || 'NA';
+
+    // Filtro por estado
+    if (!sbState.filtros.has(efKey)) continue;
+
+    // Filtro por búsqueda
+    if (q && !normaliza(ciudad.nombre).includes(q)) continue;
+
+    const region = ciudad.region || 'Otras';
+    if (!porRegion[region]) porRegion[region] = [];
+    porRegion[region].push({ciudad, zona, efecto: ef});
+  }
+
+  // Ordenar ciudades dentro de cada región
+  for (const r of Object.keys(porRegion)) {
+    porRegion[r].sort((a, b) => a.ciudad.nombre.localeCompare(b.ciudad.nombre, 'es'));
+  }
+
+  // Devolver array ordenado de regiones
+  return Object.keys(porRegion)
+    .sort((a, b) => a.localeCompare(b, 'es'))
+    .map(r => ({region: r, items: porRegion[r]}));
+}
+
+function renderSidebar() {
+  const data = buildSidebarData();
+  const totalCiudades = data.reduce((acc, r) => acc + r.items.length, 0);
+  document.getElementById('sb-title-count').textContent = totalCiudades > 0 ? `${totalCiudades}` : '';
+
+  // Si es la primera vez y hay búsqueda activa, abrimos todas las regiones del resultado.
+  // Si no hay búsqueda, en la primera render abrimos la primera región para no parecer vacío.
+  if (sbState.primeraRender && data.length) {
+    sbState.regionesAbiertas.add(data[0].region);
+    sbState.primeraRender = false;
+  }
+  // Si hay query activa, abrimos automáticamente todas las regiones que matchean
+  if (sbState.query) {
+    data.forEach(d => sbState.regionesAbiertas.add(d.region));
+  }
+
+  if (!data.length) {
+    document.getElementById('sb-list').innerHTML =
+      `<div class="sb-empty">Sin resultados</div>`;
+    return;
+  }
+
+  const html = data.map(({region, items}) => {
+    const open = sbState.regionesAbiertas.has(region);
+    const itemsHtml = items.map(({ciudad, zona, efecto}) => {
+      const cls = efecto === 'LIBRE' ? 'libre'
+                : efecto === 'CONDICIONADO' ? 'cond'
+                : efecto === 'PROHIBIDO' ? 'proh'
+                : 'na';
+      const zonaExtra = (zona && zona.nombre && zona.nombre !== 'ZBE') ? zona.nombre : '';
+      return `<div class="sb-city" data-zona-id="${zona ? zona.id : ''}" data-ciudad-id="${ciudad.id}">
+        <span class="sb-city-dot ${cls}"></span>
+        <span class="sb-city-name">${ciudad.nombre}</span>
+        ${zonaExtra ? `<span class="sb-city-zone">${zonaExtra}</span>` : ''}
+      </div>`;
+    }).join('');
+
+    return `<div class="sb-region ${open ? 'open' : ''}" data-region="${region}">
+      <div class="sb-region-head">
+        <span class="sb-region-name">${region}</span>
+        <span class="sb-region-meta">
+          <span class="sb-region-count">${items.length}</span>
+          <span class="sb-region-arrow">▸</span>
+        </span>
+      </div>
+      <div class="sb-region-body">${itemsHtml}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('sb-list').innerHTML = html;
+
+  // Restaurar marca de activa si hay zona seleccionada
+  if (state.zonaSeleccionada) {
+    const cityEl = document.querySelector(`.sb-city[data-zona-id="${state.zonaSeleccionada.id}"]`);
+    if (cityEl) cityEl.classList.add('active');
+  }
+}
+
+// Click en cabecera de región: toggle
+document.getElementById('sb-list').addEventListener('click', e => {
+  const head = e.target.closest('.sb-region-head');
+  if (head) {
+    const region = head.parentElement.dataset.region;
+    if (sbState.regionesAbiertas.has(region)) sbState.regionesAbiertas.delete(region);
+    else sbState.regionesAbiertas.add(region);
+    head.parentElement.classList.toggle('open');
+    return;
+  }
+  const cityEl = e.target.closest('.sb-city');
+  if (cityEl) {
+    const zonaId = cityEl.dataset.zonaId;
+    const zona = DATASET.zonas.find(z => z.id === zonaId);
+    if (zona) abrirZona(zona);
+  }
+});
+
+// Buscador de la sidebar
+const sbSearchInput = document.getElementById('sb-search-input');
+const sbSearchClear = document.getElementById('sb-search-clear');
+sbSearchInput.addEventListener('input', e => {
+  sbState.query = e.target.value;
+  sbSearchClear.classList.toggle('visible', sbState.query.length > 0);
+  renderSidebar();
+});
+sbSearchInput.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    sbSearchInput.value = '';
+    sbState.query = '';
+    sbSearchClear.classList.remove('visible');
+    renderSidebar();
+    sbSearchInput.blur();
+  }
+});
+sbSearchClear.addEventListener('click', () => {
+  sbSearchInput.value = '';
+  sbState.query = '';
+  sbSearchClear.classList.remove('visible');
+  renderSidebar();
+  sbSearchInput.focus();
+});
+
+// Filtros chip (toggle)
+document.getElementById('sb-filters').addEventListener('click', e => {
+  const chip = e.target.closest('.sb-chip');
+  if (!chip) return;
+  const f = chip.dataset.filter;
+  if (sbState.filtros.has(f)) {
+    sbState.filtros.delete(f);
+    chip.classList.add('off');
+  } else {
+    sbState.filtros.add(f);
+    chip.classList.remove('off');
+  }
+  renderSidebar();
+});
+
+// Init
+updateCTA();
+</script>
+</body>
+</html>
