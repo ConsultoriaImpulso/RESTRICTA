@@ -1,6 +1,6 @@
 // AUTOGENERADO por scripts/build-dataset.mjs — NO EDITAR A MANO.
 // Fuente: data/zbe.csv (export del Google Sheets)
-// Generado: 2026-05-04T14:34:43.359Z
+// Generado: 2026-05-04T14:46:06.659Z
 const DATASET = {
   "catalogos": {
     "grupos_perfil": [
@@ -1276,6 +1276,18 @@ const DATASET = {
       "tonelaje_max": 3500,
       "perfil": "particular",
       "efecto": "CONDICIONADO",
+      "condiciones": []
+    },
+    {
+      "zona_id": "alicante",
+      "etiquetas": [
+        "ECO"
+      ],
+      "tipo_vehiculo": "turismo",
+      "tonelaje_min": 0,
+      "tonelaje_max": 3500,
+      "perfil": "particular",
+      "efecto": "LIBRE",
       "condiciones": []
     }
   ]
