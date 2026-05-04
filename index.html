@@ -1257,7 +1257,7 @@ function refreshMap() {
     } else if (z.lat != null && z.lng != null) {
       // Fallback: punto pequeño cuando no hay polígono GeoJSON.
       layer = L.circleMarker([z.lat, z.lng], {
-        color, fillColor: color, fillOpacity: .55, weight: 2, radius: 6
+        color, fillColor: color, fillOpacity: .55, weight: 2, radius: 3
       });
       layer.bindTooltip(z.nombre_completo, {direction:'top'});
       layer.on('click', () => abrirZona(z));
