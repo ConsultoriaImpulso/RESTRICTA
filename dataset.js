@@ -1,6 +1,6 @@
 // AUTOGENERADO por scripts/build-dataset.mjs — NO EDITAR A MANO.
 // Fuente: data/zbe.csv (export del Google Sheets)
-// Generado: 2026-05-04T15:25:08.947Z
+// Generado: 2026-05-04T16:10:58.898Z
 const DATASET = {
   "catalogos": {
     "grupos_perfil": [
@@ -776,7 +776,8 @@ const DATASET = {
       "ciudad_id": "albacete",
       "vigencia": "En vigor",
       "lat": 38.9943,
-      "lng": -1.8585
+      "lng": -1.8585,
+      "geojson_url": "data/geojson/albacete.geojson"
     },
     {
       "id": "alicante",
@@ -795,7 +796,8 @@ const DATASET = {
       "ciudad_id": "almeria",
       "vigencia": "En vigor",
       "lat": 36.8417,
-      "lng": -2.4597
+      "lng": -2.4597,
+      "geojson_url": "data/geojson/almeria.geojson"
     },
     {
       "id": "avila",
@@ -814,7 +816,8 @@ const DATASET = {
       "ciudad_id": "badajoz",
       "vigencia": "En vigor",
       "lat": 38.8794,
-      "lng": -6.9707
+      "lng": -6.9707,
+      "geojson_url": "data/geojson/badajoz.geojson"
     },
     {
       "id": "barcelona-rondas",
@@ -853,7 +856,8 @@ const DATASET = {
       "ciudad_id": "caceres",
       "vigencia": "En vigor",
       "lat": 39.4753,
-      "lng": -6.3724
+      "lng": -6.3724,
+      "geojson_url": "data/geojson/caceres.geojson"
     },
     {
       "id": "cadiz",
@@ -871,7 +875,8 @@ const DATASET = {
       "ciudad_id": "castellon",
       "vigencia": "En vigor",
       "lat": 39.9864,
-      "lng": -0.0513
+      "lng": -0.0513,
+      "geojson_url": "data/geojson/castellon.geojson"
     },
     {
       "id": "ceuta",
@@ -889,7 +894,8 @@ const DATASET = {
       "ciudad_id": "ciudad-real",
       "vigencia": "En vigor",
       "lat": 38.9848,
-      "lng": -3.9275
+      "lng": -3.9275,
+      "geojson_url": "data/geojson/ciudad-real.geojson"
     },
     {
       "id": "cordoba",
@@ -898,7 +904,8 @@ const DATASET = {
       "ciudad_id": "cordoba",
       "vigencia": "En vigor",
       "lat": 37.8882,
-      "lng": -4.7794
+      "lng": -4.7794,
+      "geojson_url": "data/geojson/cordoba.geojson"
     },
     {
       "id": "cuenca",
@@ -907,7 +914,8 @@ const DATASET = {
       "ciudad_id": "cuenca",
       "vigencia": "En vigor",
       "lat": 40.0704,
-      "lng": -2.1374
+      "lng": -2.1374,
+      "geojson_url": "data/geojson/cuenca.geojson"
     },
     {
       "id": "gijon",
@@ -945,7 +953,8 @@ const DATASET = {
       "ciudad_id": "guadalajara",
       "vigencia": "En vigor",
       "lat": 40.632,
-      "lng": -3.1669
+      "lng": -3.1669,
+      "geojson_url": "data/geojson/guadalajara.geojson"
     },
     {
       "id": "huelva",
@@ -954,7 +963,8 @@ const DATASET = {
       "ciudad_id": "huelva",
       "vigencia": "En vigor",
       "lat": 37.2614,
-      "lng": -6.9447
+      "lng": -6.9447,
+      "geojson_url": "data/geojson/huelva.geojson"
     },
     {
       "id": "huesca",
@@ -963,7 +973,8 @@ const DATASET = {
       "ciudad_id": "huesca",
       "vigencia": "En vigor",
       "lat": 42.1361,
-      "lng": -0.4087
+      "lng": -0.4087,
+      "geojson_url": "data/geojson/huesca.geojson"
     },
     {
       "id": "jaen",
@@ -972,7 +983,8 @@ const DATASET = {
       "ciudad_id": "jaen",
       "vigencia": "En vigor",
       "lat": 37.7796,
-      "lng": -3.7849
+      "lng": -3.7849,
+      "geojson_url": "data/geojson/jaen.geojson"
     },
     {
       "id": "las-palmas-de-gran-canaria",
@@ -1020,7 +1032,8 @@ const DATASET = {
       "ciudad_id": "lugo",
       "vigencia": "En vigor",
       "lat": 43.0125,
-      "lng": -7.5559
+      "lng": -7.5559,
+      "geojson_url": "data/geojson/lugo.geojson"
     },
     {
       "id": "madrid",
@@ -1097,7 +1110,8 @@ const DATASET = {
       "ciudad_id": "oviedo",
       "vigencia": "En vigor",
       "lat": 43.3614,
-      "lng": -5.8493
+      "lng": -5.8493,
+      "geojson_url": "data/geojson/oviedo.geojson"
     },
     {
       "id": "palencia",
@@ -1106,7 +1120,8 @@ const DATASET = {
       "ciudad_id": "palencia",
       "vigencia": "En vigor",
       "lat": 42.0096,
-      "lng": -4.5288
+      "lng": -4.5288,
+      "geojson_url": "data/geojson/palencia.geojson"
     },
     {
       "id": "palma-mallorca",
@@ -1174,7 +1189,8 @@ const DATASET = {
       "ciudad_id": "segovia",
       "vigencia": "En vigor",
       "lat": 40.9429,
-      "lng": -4.1088
+      "lng": -4.1088,
+      "geojson_url": "data/geojson/segovia.geojson"
     },
     {
       "id": "sevilla",
@@ -1202,7 +1218,8 @@ const DATASET = {
       "ciudad_id": "sta-cruz-tenerife",
       "vigencia": "En vigor",
       "lat": 28.4636,
-      "lng": -16.2518
+      "lng": -16.2518,
+      "geojson_url": "data/geojson/sta-cruz-tenerife.geojson"
     },
     {
       "id": "tarragona",
@@ -1278,7 +1295,8 @@ const DATASET = {
       "ciudad_id": "zamora",
       "vigencia": "En vigor",
       "lat": 41.5036,
-      "lng": -5.7449
+      "lng": -5.7449,
+      "geojson_url": "data/geojson/zamora.geojson"
     },
     {
       "id": "zaragoza",
