@@ -241,7 +241,7 @@ input{font-family:inherit;outline:none}
 .fuel-btn.active{background:rgba(63,230,208,.1);border-color:var(--teal);color:var(--teal)}
 
 /* VEHÍCULO */
-.veh-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:600px}
+.veh-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;width:100%;max-width:680px}
 .veh-btn{
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
   padding:16px 11px;border-radius:9px;border:1px solid var(--br2);
@@ -683,17 +683,11 @@ input{font-family:inherit;outline:none}
           </div>
           <div class="field-label">— 2 · Tipo de vehículo</div>
           <div class="veh-grid">
-            <button class="veh-btn" data-veh="turismo"><span class="veh-ico">🚗</span><span class="veh-name">Turismo</span><span class="veh-sub">Particular</span></button>
+            <button class="veh-btn" data-veh="turismo"><span class="veh-ico">🚗</span><span class="veh-name">Turismo</span><span class="veh-sub">M1 · ≤ 3.500 kg</span></button>
             <button class="veh-btn" data-veh="moto"><span class="veh-ico">🏍️</span><span class="veh-name">Moto</span><span class="veh-sub">L1 – L7</span></button>
             <button class="veh-btn" data-veh="furgoneta"><span class="veh-ico">🚐</span><span class="veh-name">Furgoneta</span><span class="veh-sub">N1 / N2</span></button>
-            <button class="veh-btn" data-veh="otros"><span class="veh-ico">🚛</span><span class="veh-name">Otros</span><span class="veh-sub">Camión · autobús</span></button>
-          </div>
-          <div class="peso-block" id="otros-tipo-block">
-            <div class="field-label" style="font-size:.55rem">— Tipo</div>
-            <div class="peso-grid" style="grid-template-columns:1fr 1fr">
-              <button class="peso-btn" data-otros="camion"><span class="peso-rng">Camión</span>Mercancías N2/N3</button>
-              <button class="peso-btn" data-otros="autobus"><span class="peso-rng">Autobús</span>Viajeros M2/M3</button>
-            </div>
+            <button class="veh-btn" data-veh="camion"><span class="veh-ico">🚛</span><span class="veh-name">Camión</span><span class="veh-sub">N2 / N3</span></button>
+            <button class="veh-btn" data-veh="autobus"><span class="veh-ico">🚌</span><span class="veh-name">Autobús</span><span class="veh-sub">M2 / M3</span></button>
           </div>
           <div class="peso-block" id="peso-block">
             <div class="field-label" style="font-size:.55rem">— Masa máxima autorizada</div>
@@ -814,7 +808,6 @@ const state = {
   fuel: null,
   badge: null,
   vehicle: null,
-  otrosTipo: null,    // 'camion' | 'autobus' (cuando vehicle = 'otros')
   peso: null,         // {min, max}
   perfilL1: null,     // 'particular' | 'otros'
   perfiles: new Set(['particular']),  // siempre incluye 'particular'
@@ -940,59 +933,36 @@ document.querySelectorAll('.entry-tab').forEach(t => {
 });
 
 // VEHÍCULO
-const otrosTipoBlock = document.getElementById('otros-tipo-block');
 const pesoBlock = document.getElementById('peso-block');
 const pesoGrid = document.getElementById('peso-grid');
+
+// Tipos de vehículo que SÍ tienen selector de peso (los demás se asumen ≤ 3.500 kg).
+const VEHICULOS_CON_PESO = new Set(['furgoneta', 'camion', 'autobus']);
 
 document.querySelectorAll('.veh-btn').forEach(b => {
   b.addEventListener('click', () => {
     document.querySelectorAll('.veh-btn').forEach(x => x.classList.remove('active'));
     b.classList.add('active');
     state.vehicle = b.dataset.veh;
-    state.otrosTipo = null;
     state.peso = null;
-    document.querySelectorAll('[data-otros]').forEach(x => x.classList.remove('active'));
     document.querySelectorAll('.peso-btn[data-peso]').forEach(x => x.classList.remove('active'));
 
-    if (state.vehicle === 'otros') {
-      otrosTipoBlock.classList.add('visible');
-      pesoBlock.classList.remove('visible');
-    } else if (state.vehicle === 'furgoneta') {
-      otrosTipoBlock.classList.remove('visible');
-      mostrarPesoFurgoneta();
+    if (VEHICULOS_CON_PESO.has(state.vehicle)) {
+      mostrarPeso();
     } else {
-      otrosTipoBlock.classList.remove('visible');
+      // turismo / moto → siempre ≤ 3.500 kg, sin selector
       pesoBlock.classList.remove('visible');
-      state.peso = {min:0, max:3500};   // turismo/moto fijo
+      state.peso = {min: 0, max: 3500};
     }
     updateCTA();
   });
 });
 
-document.querySelectorAll('[data-otros]').forEach(b => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('[data-otros]').forEach(x => x.classList.remove('active'));
-    b.classList.add('active');
-    state.otrosTipo = b.dataset.otros;
-    mostrarPesoOtros();
-    updateCTA();
-  });
-});
-
-function mostrarPesoFurgoneta() {
-  pesoGrid.innerHTML = `
-    <button class="peso-btn" data-peso="0-3500"><span class="peso-rng">≤ 3.500 kg</span>Furgoneta común</button>
-    <button class="peso-btn" data-peso="3500-7500"><span class="peso-rng">3.500 – 7.500</span>Requiere C1</button>
-  `;
-  pesoBlock.classList.add('visible');
-  bindPesoBtns();
-}
-
-function mostrarPesoOtros() {
+function mostrarPeso() {
   pesoGrid.innerHTML = `
     <button class="peso-btn" data-peso="0-3500"><span class="peso-rng">≤ 3.500 kg</span>Ligero</button>
     <button class="peso-btn" data-peso="3500-7500"><span class="peso-rng">3.500 – 7.500</span>Mediano</button>
-    <button class="peso-btn" data-peso="7500-"><span class="peso-rng">&gt; 7.500 kg</span>Pesado · BOE 2026</button>
+    <button class="peso-btn" data-peso="7500-"><span class="peso-rng">&gt; 7.500 kg</span>Pesado</button>
   `;
   pesoBlock.classList.add('visible');
   bindPesoBtns();
@@ -1032,7 +1002,12 @@ function mostrarPerfilesL2() {
   const grupos = DATASET.catalogos.grupos_perfil.filter(g => g.id !== 'particular');
   let html = '';
   for (const g of grupos) {
-    const perfiles = DATASET.catalogos.perfiles.filter(p => p.grupo === g.id).sort((a,b) => a.orden - b.orden);
+    // Filtramos por tipo de vehículo seleccionado en el paso 2
+    const perfiles = DATASET.catalogos.perfiles
+      .filter(p => p.grupo === g.id)
+      .filter(p => !p.vehiculos || p.vehiculos.includes(state.vehicle))
+      .sort((a,b) => a.orden - b.orden);
+    if (perfiles.length === 0) continue;  // grupo vacío para este vehículo → no se muestra
     // Resumen de perfiles entre paréntesis (versión corta)
     const resumen = perfiles.map(p => p.nombre.split(' (')[0].split(' ·')[0]).join(' · ');
     html += `<div class="grupo" data-grupo="${g.id}">
@@ -1082,7 +1057,7 @@ function mostrarPerfilesL2() {
 function updateCTA() {
   // Manejar la visibilidad de los steps según completitud
   const step1Done = !!state.badge;
-  const step2Done = state.vehicle && state.peso && (state.vehicle !== 'otros' || state.otrosTipo);
+  const step2Done = state.vehicle && state.peso;
   const step3Done = !!state.perfilL1;
 
   // STEP 1
@@ -1098,9 +1073,8 @@ function updateCTA() {
     s2.classList.add('visible');
     s2.classList.toggle('locked', step2Done);
     if (step2Done) {
-      const v = state.vehicle === 'otros' ? state.otrosTipo : state.vehicle;
       const p = state.peso.max ? `${state.peso.min}-${state.peso.max} kg` : `>${state.peso.min} kg`;
-      document.getElementById('sum-vehicle').textContent = `${v} · ${p}`;
+      document.getElementById('sum-vehicle').textContent = `${state.vehicle} · ${p}`;
     }
   } else {
     s2.classList.remove('visible');
@@ -1223,7 +1197,6 @@ async function initMap() {
 }
 
 function tipoVehiculoEnDataset() {
-  if (state.vehicle === 'otros') return state.otrosTipo;
   return state.vehicle;
 }
 
