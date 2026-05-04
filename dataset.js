@@ -1,6 +1,6 @@
 // AUTOGENERADO por scripts/build-dataset.mjs — NO EDITAR A MANO.
 // Fuente: data/zbe.csv (export del Google Sheets)
-// Generado: 2026-05-04T14:57:54.829Z
+// Generado: 2026-05-04T15:08:35.649Z
 const DATASET = {
   "catalogos": {
     "grupos_perfil": [
@@ -804,7 +804,8 @@ const DATASET = {
       "ciudad_id": "avila",
       "vigencia": "En vigor",
       "lat": 40.6566,
-      "lng": -4.6814
+      "lng": -4.6814,
+      "geojson_url": "data/geojson/avila.geojson"
     },
     {
       "id": "badajoz",
@@ -842,7 +843,8 @@ const DATASET = {
       "ciudad_id": "burgos",
       "vigencia": "En vigor",
       "lat": 42.3439,
-      "lng": -3.6969
+      "lng": -3.6969,
+      "geojson_url": "data/geojson/burgos.geojson"
     },
     {
       "id": "caceres",
@@ -923,7 +925,8 @@ const DATASET = {
       "ciudad_id": "girona",
       "vigencia": "En vigor",
       "lat": 41.9794,
-      "lng": 2.8214
+      "lng": 2.8214,
+      "geojson_url": "data/geojson/girona.geojson"
     },
     {
       "id": "granada",
@@ -978,7 +981,8 @@ const DATASET = {
       "ciudad_id": "las-palmas-de-gran-canaria",
       "vigencia": "En vigor",
       "lat": 28.1235,
-      "lng": -15.4363
+      "lng": -15.4363,
+      "geojson_url": "data/geojson/las-palmas-de-gran-canaria.geojson"
     },
     {
       "id": "leon",
@@ -987,7 +991,8 @@ const DATASET = {
       "ciudad_id": "leon",
       "vigencia": "En vigor",
       "lat": 42.5987,
-      "lng": -5.5671
+      "lng": -5.5671,
+      "geojson_url": "data/geojson/leon.geojson"
     },
     {
       "id": "lleida",
@@ -996,7 +1001,8 @@ const DATASET = {
       "ciudad_id": "lleida",
       "vigencia": "En vigor",
       "lat": 41.6176,
-      "lng": 0.62
+      "lng": 0.62,
+      "geojson_url": "data/geojson/lleida.geojson"
     },
     {
       "id": "logrono",
@@ -1081,7 +1087,8 @@ const DATASET = {
       "ciudad_id": "ourense",
       "vigencia": "En vigor",
       "lat": 42.3358,
-      "lng": -7.8639
+      "lng": -7.8639,
+      "geojson_url": "data/geojson/ourense.geojson"
     },
     {
       "id": "oviedo",
@@ -1137,7 +1144,8 @@ const DATASET = {
       "ciudad_id": "salamanca",
       "vigencia": "En vigor",
       "lat": 40.9701,
-      "lng": -5.6635
+      "lng": -5.6635,
+      "geojson_url": "data/geojson/salamanca.geojson"
     },
     {
       "id": "san-sebastian",
@@ -1156,7 +1164,8 @@ const DATASET = {
       "ciudad_id": "santander",
       "vigencia": "En vigor",
       "lat": 43.4623,
-      "lng": -3.8099
+      "lng": -3.8099,
+      "geojson_url": "data/geojson/santander.geojson"
     },
     {
       "id": "segovia",
@@ -1202,7 +1211,8 @@ const DATASET = {
       "ciudad_id": "tarragona",
       "vigencia": "En vigor",
       "lat": 41.1189,
-      "lng": 1.2445
+      "lng": 1.2445,
+      "geojson_url": "data/geojson/tarragona.geojson"
     },
     {
       "id": "teruel",
