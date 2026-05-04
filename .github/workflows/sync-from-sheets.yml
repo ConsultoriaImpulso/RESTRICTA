@@ -1,5 +1,5 @@
 name: Sync CSV desde Google Sheets
-
+ 
 # OPCIONAL. Baja el CSV publicado desde Google Sheets cada hora
 # (y a demanda) y lo commitea si ha cambiado. El otro workflow
 # (build.yml) se encadenará y regenerará dataset.js.
@@ -13,28 +13,32 @@ name: Sync CSV desde Google Sheets
 #       Nombre: SHEETS_CSV_URL
 #       Valor:  esa URL
 # 3. Habilita este workflow en Actions y opcionalmente edita el cron.
-
+ 
 on:
   schedule:
     - cron: '17 * * * *'   # cada hora en el minuto 17
   workflow_dispatch:
-
+ 
 permissions:
   contents: write
-
+ 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
+ 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+ 
       - name: Comprobar secreto
         run: |
           if [[ -z "${{ secrets.SHEETS_CSV_URL }}" ]]; then
             echo "::warning::Falta el secreto SHEETS_CSV_URL. Saltando sync."
             exit 0
           fi
-
+ 
       - name: Descargar CSV del Sheets publicado
         env:
           URL: ${{ secrets.SHEETS_CSV_URL }}
@@ -48,15 +52,19 @@ jobs:
             exit 1
           fi
           mv /tmp/zbe.csv data/zbe.csv
-
-      - name: Commit y push si data/zbe.csv cambió
+ 
+      - name: Regenerar dataset.js
+        run: node scripts/build-dataset.mjs
+ 
+      - name: Commit y push si hay cambios
         run: |
           git config user.name  "restricta-bot"
           git config user.email "actions@users.noreply.github.com"
-          if [[ -n "$(git status --porcelain data/zbe.csv)" ]]; then
-            git add data/zbe.csv
-            git commit -m "data: sync CSV desde Google Sheets"
+          if [[ -n "$(git status --porcelain data/zbe.csv dataset.js)" ]]; then
+            git add data/zbe.csv dataset.js
+            git commit -m "data: sync CSV desde Google Sheets + regenera dataset.js"
             git push
           else
-            echo "data/zbe.csv sin cambios."
+            echo "Sin cambios."
           fi
+ 
