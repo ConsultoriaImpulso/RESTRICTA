@@ -1,6 +1,6 @@
 // AUTOGENERADO por scripts/build-dataset.mjs — NO EDITAR A MANO.
 // Fuente: data/zbe.csv (export del Google Sheets)
-// Generado: 2026-05-04T14:46:06.659Z
+// Generado: 2026-05-04T14:57:54.829Z
 const DATASET = {
   "catalogos": {
     "grupos_perfil": [
@@ -766,7 +766,8 @@ const DATASET = {
       "ciudad_id": "a-coruna",
       "vigencia": "En vigor",
       "lat": 43.3623,
-      "lng": -8.4115
+      "lng": -8.4115,
+      "geojson_url": "data/geojson/a-coruna.geojson"
     },
     {
       "id": "albacete",
@@ -784,7 +785,8 @@ const DATASET = {
       "ciudad_id": "alicante",
       "vigencia": "En vigor",
       "lat": 38.3452,
-      "lng": -0.481
+      "lng": -0.481,
+      "geojson_url": "data/geojson/alicante.geojson"
     },
     {
       "id": "almeria",
@@ -820,7 +822,8 @@ const DATASET = {
       "ciudad_id": "barcelona-rondas",
       "vigencia": "En vigor",
       "lat": 41.3851,
-      "lng": 2.1734
+      "lng": 2.1734,
+      "geojson_url": "data/geojson/barcelona-rondas.geojson"
     },
     {
       "id": "bilbao",
@@ -829,7 +832,8 @@ const DATASET = {
       "ciudad_id": "bilbao",
       "vigencia": "En vigor",
       "lat": 43.263,
-      "lng": -2.935
+      "lng": -2.935,
+      "geojson_url": "data/geojson/bilbao.geojson"
     },
     {
       "id": "burgos",
@@ -928,7 +932,8 @@ const DATASET = {
       "ciudad_id": "granada",
       "vigencia": "En vigor",
       "lat": 37.1773,
-      "lng": -3.5986
+      "lng": -3.5986,
+      "geojson_url": "data/geojson/granada.geojson"
     },
     {
       "id": "guadalajara",
@@ -1018,7 +1023,8 @@ const DATASET = {
       "ciudad_id": "madrid",
       "vigencia": "En vigor",
       "lat": 40.4168,
-      "lng": -3.7038
+      "lng": -3.7038,
+      "geojson_url": "data/geojson/madrid.geojson"
     },
     {
       "id": "madrid-distrito-centro",
@@ -1037,7 +1043,8 @@ const DATASET = {
       "ciudad_id": "madrid-plaza-eliptica",
       "vigencia": "En vigor",
       "lat": 40.3854,
-      "lng": -3.7186
+      "lng": -3.7186,
+      "geojson_url": "data/geojson/madrid-plaza-eliptica.geojson"
     },
     {
       "id": "malaga",
@@ -1046,7 +1053,8 @@ const DATASET = {
       "ciudad_id": "malaga",
       "vigencia": "En vigor",
       "lat": 36.7213,
-      "lng": -4.4217
+      "lng": -4.4217,
+      "geojson_url": "data/geojson/malaga.geojson"
     },
     {
       "id": "melilla",
@@ -1100,7 +1108,8 @@ const DATASET = {
       "ciudad_id": "palma-mallorca",
       "vigencia": "En vigor",
       "lat": 39.5696,
-      "lng": 2.6502
+      "lng": 2.6502,
+      "geojson_url": "data/geojson/palma-mallorca.geojson"
     },
     {
       "id": "pamplona",
@@ -1109,7 +1118,8 @@ const DATASET = {
       "ciudad_id": "pamplona",
       "vigencia": "En vigor",
       "lat": 42.8125,
-      "lng": -1.6458
+      "lng": -1.6458,
+      "geojson_url": "data/geojson/pamplona.geojson"
     },
     {
       "id": "pontevedra",
@@ -1136,7 +1146,8 @@ const DATASET = {
       "ciudad_id": "san-sebastian",
       "vigencia": "En vigor",
       "lat": 43.3183,
-      "lng": -1.9812
+      "lng": -1.9812,
+      "geojson_url": "data/geojson/san-sebastian.geojson"
     },
     {
       "id": "santander",
@@ -1163,7 +1174,8 @@ const DATASET = {
       "ciudad_id": "sevilla",
       "vigencia": "En vigor",
       "lat": 37.3891,
-      "lng": -5.9845
+      "lng": -5.9845,
+      "geojson_url": "data/geojson/sevilla.geojson"
     },
     {
       "id": "soria",
@@ -1217,7 +1229,8 @@ const DATASET = {
       "ciudad_id": "valencia",
       "vigencia": "En vigor",
       "lat": 39.4699,
-      "lng": -0.3763
+      "lng": -0.3763,
+      "geojson_url": "data/geojson/valencia.geojson"
     },
     {
       "id": "valladolid",
@@ -1226,7 +1239,8 @@ const DATASET = {
       "ciudad_id": "valladolid",
       "vigencia": "En vigor",
       "lat": 41.6523,
-      "lng": -4.7245
+      "lng": -4.7245,
+      "geojson_url": "data/geojson/valladolid.geojson"
     },
     {
       "id": "vigo",
@@ -1244,7 +1258,8 @@ const DATASET = {
       "ciudad_id": "vitoria-gasteiz",
       "vigencia": "En vigor",
       "lat": 42.8467,
-      "lng": -2.6716
+      "lng": -2.6716,
+      "geojson_url": "data/geojson/vitoria-gasteiz.geojson"
     },
     {
       "id": "zamora",
@@ -1262,7 +1277,8 @@ const DATASET = {
       "ciudad_id": "zaragoza",
       "vigencia": "En vigor",
       "lat": 41.6488,
-      "lng": -0.8891
+      "lng": -0.8891,
+      "geojson_url": "data/geojson/zaragoza.geojson"
     }
   ],
   "reglas": [
