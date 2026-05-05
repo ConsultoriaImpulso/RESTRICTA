@@ -623,11 +623,11 @@ input{font-family:inherit;outline:none}
           <div class="field-hint">Si la sabes, selecciónala directamente. Si no, calcúlala desde tu matrícula.</div>
 
           <div class="entry-tabs">
-            <button class="entry-tab active" data-pane="pane-matricula">📋 Por matrícula</button>
-            <button class="entry-tab" data-pane="pane-directa">🏷️ Sé mi etiqueta</button>
+            <button class="entry-tab" data-pane="pane-matricula">📋 Por matrícula</button>
+            <button class="entry-tab active" data-pane="pane-directa">🏷️ Sé mi etiqueta</button>
           </div>
 
-          <div class="entry-pane active" id="pane-matricula">
+          <div class="entry-pane" id="pane-matricula">
             <div class="plate">
               <div class="plate-eu"><div class="stars">★★★</div><div>E</div></div>
               <input class="plate-input" id="plate-input" placeholder="0000 AAA" maxlength="8">
@@ -660,7 +660,7 @@ input{font-family:inherit;outline:none}
             <div class="fuel-grid" id="fuel-grid" style="display:none"></div>
           </div>
 
-          <div class="entry-pane" id="pane-directa">
+          <div class="entry-pane active" id="pane-directa">
             <div class="field-hint">Selecciona la etiqueta de tu vehículo:</div>
             <div class="label-grid">
               <div class="lbl-card" data-badge="0"><div class="lbl-circle l-0">0</div><div class="lbl-name">CERO</div></div>
@@ -1189,6 +1189,11 @@ async function initMap() {
     attribution: '© OpenStreetMap · RESTRICTA', maxZoom: 19
   }).addTo(map);
   markers = L.layerGroup().addTo(map);
+  // Redimensionar circleMarkers al hacer zoom (los polígonos ya escalan solos)
+  map.on('zoomend', () => {
+    const r = Math.max(3, Math.min(10, map.getZoom() - 4));
+    markers.eachLayer(l => { if (l.setRadius) l.setRadius(r); });
+  });
   // Cargamos polígonos en background; pintamos markers ya
   refreshMap();
   loadGeojsons().then(() => refreshMap());
@@ -1256,8 +1261,9 @@ function refreshMap() {
       layer.on('click', () => abrirZona(z));
     } else if (z.lat != null && z.lng != null) {
       // Fallback: punto pequeño cuando no hay polígono GeoJSON.
+      const r = Math.max(3, Math.min(10, map.getZoom() - 4));
       layer = L.circleMarker([z.lat, z.lng], {
-        color, fillColor: color, fillOpacity: .55, weight: 2, radius: 3
+        color, fillColor: color, fillOpacity: .55, weight: 2, radius: r
       });
       layer.bindTooltip(z.nombre_completo, {direction:'top'});
       layer.on('click', () => abrirZona(z));
