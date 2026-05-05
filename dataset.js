@@ -1,6 +1,6 @@
 // AUTOGENERADO por scripts/build-dataset.mjs — NO EDITAR A MANO.
 // Fuente: data/zbe.csv (export del Google Sheets)
-// Generado: 2026-05-05T11:41:03.945Z
+// Generado: 2026-05-05T13:22:33.587Z
 const DATASET = {
   "catalogos": {
     "grupos_perfil": [
@@ -310,17 +310,17 @@ const DATASET = {
   },
   "ciudades": [
     {
-      "id": "a-coruna",
-      "nombre": "A Coruña",
-      "region": "Galicia",
+      "id": "a-corua-a",
+      "nombre": "A CoruÃ±a",
+      "region": "Otras",
       "zonas": [
-        "a-coruna"
+        "a-corua-a"
       ]
     },
     {
       "id": "albacete",
       "nombre": "Albacete",
-      "region": "Castilla-La Mancha",
+      "region": "Otras",
       "zonas": [
         "albacete"
       ]
@@ -328,31 +328,31 @@ const DATASET = {
     {
       "id": "alicante",
       "nombre": "Alicante",
-      "region": "Comunidad Valenciana",
+      "region": "Otras",
       "zonas": [
         "alicante"
       ]
     },
     {
-      "id": "almeria",
-      "nombre": "Almería",
-      "region": "Andalucía",
+      "id": "almera-a",
+      "nombre": "AlmerÃ­a",
+      "region": "Otras",
       "zonas": [
-        "almeria"
+        "almera-a"
       ]
     },
     {
-      "id": "avila",
-      "nombre": "Ávila",
-      "region": "Castilla y León",
+      "id": "a-vila",
+      "nombre": "Ãvila",
+      "region": "Otras",
       "zonas": [
-        "avila"
+        "a-vila"
       ]
     },
     {
       "id": "badajoz",
       "nombre": "Badajoz",
-      "region": "Extremadura",
+      "region": "Otras",
       "zonas": [
         "badajoz"
       ]
@@ -360,7 +360,7 @@ const DATASET = {
     {
       "id": "barcelona-rondas",
       "nombre": "Barcelona (Rondas)",
-      "region": "Cataluña",
+      "region": "Otras",
       "zonas": [
         "barcelona-rondas"
       ]
@@ -368,7 +368,7 @@ const DATASET = {
     {
       "id": "bilbao",
       "nombre": "Bilbao",
-      "region": "País Vasco",
+      "region": "Otras",
       "zonas": [
         "bilbao"
       ]
@@ -376,39 +376,47 @@ const DATASET = {
     {
       "id": "burgos",
       "nombre": "Burgos",
-      "region": "Castilla y León",
+      "region": "Otras",
       "zonas": [
         "burgos"
       ]
     },
     {
-      "id": "caceres",
-      "nombre": "Cáceres",
-      "region": "Extremadura",
+      "id": "ca-ceres",
+      "nombre": "CÃ¡ceres",
+      "region": "Otras",
       "zonas": [
-        "caceres"
+        "ca-ceres"
       ]
     },
     {
-      "id": "cadiz",
-      "nombre": "Cádiz",
-      "region": "Andalucía",
+      "id": "ca-diz",
+      "nombre": "CÃ¡diz",
+      "region": "Otras",
       "zonas": [
-        "cadiz"
+        "ca-diz"
       ]
     },
     {
-      "id": "castellon",
-      "nombre": "Castellón",
-      "region": "Comunidad Valenciana",
+      "id": "ca-rdoba",
+      "nombre": "CÃ³rdoba",
+      "region": "Otras",
       "zonas": [
-        "castellon"
+        "ca-rdoba"
+      ]
+    },
+    {
+      "id": "castella-n",
+      "nombre": "CastellÃ³n",
+      "region": "Otras",
+      "zonas": [
+        "castella-n"
       ]
     },
     {
       "id": "ceuta",
       "nombre": "Ceuta",
-      "region": "Ciudad Autónoma de Ceuta",
+      "region": "Otras",
       "zonas": [
         "ceuta"
       ]
@@ -416,39 +424,31 @@ const DATASET = {
     {
       "id": "ciudad-real",
       "nombre": "Ciudad Real",
-      "region": "Castilla-La Mancha",
+      "region": "Otras",
       "zonas": [
         "ciudad-real"
       ]
     },
     {
-      "id": "cordoba",
-      "nombre": "Córdoba",
-      "region": "Andalucía",
-      "zonas": [
-        "cordoba"
-      ]
-    },
-    {
       "id": "cuenca",
       "nombre": "Cuenca",
-      "region": "Castilla-La Mancha",
+      "region": "Otras",
       "zonas": [
         "cuenca"
       ]
     },
     {
-      "id": "gijon",
-      "nombre": "Gijón",
-      "region": "Asturias",
+      "id": "gija-n",
+      "nombre": "GijÃ³n",
+      "region": "Otras",
       "zonas": [
-        "gijon"
+        "gija-n"
       ]
     },
     {
       "id": "girona",
       "nombre": "Girona",
-      "region": "Cataluña",
+      "region": "Otras",
       "zonas": [
         "girona"
       ]
@@ -456,7 +456,7 @@ const DATASET = {
     {
       "id": "granada",
       "nombre": "Granada",
-      "region": "Andalucía",
+      "region": "Otras",
       "zonas": [
         "granada"
       ]
@@ -464,7 +464,7 @@ const DATASET = {
     {
       "id": "guadalajara",
       "nombre": "Guadalajara",
-      "region": "Castilla-La Mancha",
+      "region": "Otras",
       "zonas": [
         "guadalajara"
       ]
@@ -472,7 +472,7 @@ const DATASET = {
     {
       "id": "huelva",
       "nombre": "Huelva",
-      "region": "Andalucía",
+      "region": "Otras",
       "zonas": [
         "huelva"
       ]
@@ -480,63 +480,71 @@ const DATASET = {
     {
       "id": "huesca",
       "nombre": "Huesca",
-      "region": "Aragón",
+      "region": "Otras",
       "zonas": [
         "huesca"
       ]
     },
     {
-      "id": "jaen",
-      "nombre": "Jaén",
-      "region": "Andalucía",
+      "id": "jaa-n",
+      "nombre": "JaÃ©n",
+      "region": "Otras",
       "zonas": [
-        "jaen"
+        "jaa-n"
       ]
     },
     {
       "id": "las-palmas-de-gran-canaria",
       "nombre": "Las Palmas de Gran Canaria",
-      "region": "Canarias",
+      "region": "Otras",
       "zonas": [
         "las-palmas-de-gran-canaria"
       ]
     },
     {
-      "id": "leon",
-      "nombre": "León",
-      "region": "Castilla y León",
+      "id": "lea-n",
+      "nombre": "LeÃ³n",
+      "region": "Otras",
       "zonas": [
-        "leon"
+        "lea-n"
       ]
     },
     {
       "id": "lleida",
       "nombre": "Lleida",
-      "region": "Cataluña",
+      "region": "Otras",
       "zonas": [
         "lleida"
       ]
     },
     {
-      "id": "logrono",
-      "nombre": "Logroño",
-      "region": "La Rioja",
+      "id": "logroa-o",
+      "nombre": "LogroÃ±o",
+      "region": "Otras",
       "zonas": [
-        "logrono"
+        "logroa-o"
       ]
     },
     {
       "id": "lugo",
       "nombre": "Lugo",
-      "region": "Galicia",
+      "region": "Otras",
       "zonas": [
         "lugo"
       ]
     },
     {
+      "id": "ma-laga",
+      "nombre": "MÃ¡laga",
+      "region": "Otras",
+      "zonas": [
+        "ma-laga"
+      ]
+    },
+    {
       "id": "madrid",
       "nombre": "Madrid",
-      "region": "Comunidad de Madrid",
+      "region": "Otras",
       "zonas": [
         "madrid"
       ]
@@ -544,31 +552,23 @@ const DATASET = {
     {
       "id": "madrid-distrito-centro",
       "nombre": "Madrid Distrito Centro",
-      "region": "Comunidad de Madrid",
+      "region": "Otras",
       "zonas": [
         "madrid-distrito-centro"
       ]
     },
     {
-      "id": "madrid-plaza-eliptica",
-      "nombre": "Madrid Plaza Elíptica",
-      "region": "Comunidad de Madrid",
+      "id": "madrid-plaza-ela-ptica",
+      "nombre": "Madrid Plaza ElÃ­ptica",
+      "region": "Otras",
       "zonas": [
-        "madrid-plaza-eliptica"
-      ]
-    },
-    {
-      "id": "malaga",
-      "nombre": "Málaga",
-      "region": "Andalucía",
-      "zonas": [
-        "malaga"
+        "madrid-plaza-ela-ptica"
       ]
     },
     {
       "id": "melilla",
       "nombre": "Melilla",
-      "region": "Ciudad Autónoma de Melilla",
+      "region": "Otras",
       "zonas": [
         "melilla"
       ]
@@ -576,7 +576,7 @@ const DATASET = {
     {
       "id": "murcia",
       "nombre": "Murcia",
-      "region": "Región de Murcia",
+      "region": "Otras",
       "zonas": [
         "murcia"
       ]
@@ -584,7 +584,7 @@ const DATASET = {
     {
       "id": "ourense",
       "nombre": "Ourense",
-      "region": "Galicia",
+      "region": "Otras",
       "zonas": [
         "ourense"
       ]
@@ -592,7 +592,7 @@ const DATASET = {
     {
       "id": "oviedo",
       "nombre": "Oviedo",
-      "region": "Asturias",
+      "region": "Otras",
       "zonas": [
         "oviedo"
       ]
@@ -600,7 +600,7 @@ const DATASET = {
     {
       "id": "palencia",
       "nombre": "Palencia",
-      "region": "Castilla y León",
+      "region": "Otras",
       "zonas": [
         "palencia"
       ]
@@ -608,7 +608,7 @@ const DATASET = {
     {
       "id": "palma-mallorca",
       "nombre": "Palma (Mallorca)",
-      "region": "Islas Baleares",
+      "region": "Otras",
       "zonas": [
         "palma-mallorca"
       ]
@@ -616,7 +616,7 @@ const DATASET = {
     {
       "id": "pamplona",
       "nombre": "Pamplona",
-      "region": "Navarra",
+      "region": "Otras",
       "zonas": [
         "pamplona"
       ]
@@ -624,7 +624,7 @@ const DATASET = {
     {
       "id": "pontevedra",
       "nombre": "Pontevedra",
-      "region": "Galicia",
+      "region": "Otras",
       "zonas": [
         "pontevedra"
       ]
@@ -632,23 +632,23 @@ const DATASET = {
     {
       "id": "salamanca",
       "nombre": "Salamanca",
-      "region": "Castilla y León",
+      "region": "Otras",
       "zonas": [
         "salamanca"
       ]
     },
     {
-      "id": "san-sebastian",
-      "nombre": "San Sebastián",
-      "region": "País Vasco",
+      "id": "san-sebastia-n",
+      "nombre": "San SebastiÃ¡n",
+      "region": "Otras",
       "zonas": [
-        "san-sebastian"
+        "san-sebastia-n"
       ]
     },
     {
       "id": "santander",
       "nombre": "Santander",
-      "region": "Cantabria",
+      "region": "Otras",
       "zonas": [
         "santander"
       ]
@@ -656,7 +656,7 @@ const DATASET = {
     {
       "id": "segovia",
       "nombre": "Segovia",
-      "region": "Castilla y León",
+      "region": "Otras",
       "zonas": [
         "segovia"
       ]
@@ -664,7 +664,7 @@ const DATASET = {
     {
       "id": "sevilla",
       "nombre": "Sevilla",
-      "region": "Andalucía",
+      "region": "Otras",
       "zonas": [
         "sevilla"
       ]
@@ -672,7 +672,7 @@ const DATASET = {
     {
       "id": "soria",
       "nombre": "Soria",
-      "region": "Castilla y León",
+      "region": "Otras",
       "zonas": [
         "soria"
       ]
@@ -680,7 +680,7 @@ const DATASET = {
     {
       "id": "sta-cruz-tenerife",
       "nombre": "Sta. Cruz Tenerife",
-      "region": "Canarias",
+      "region": "Otras",
       "zonas": [
         "sta-cruz-tenerife"
       ]
@@ -688,7 +688,7 @@ const DATASET = {
     {
       "id": "tarragona",
       "nombre": "Tarragona",
-      "region": "Cataluña",
+      "region": "Otras",
       "zonas": [
         "tarragona"
       ]
@@ -696,7 +696,7 @@ const DATASET = {
     {
       "id": "teruel",
       "nombre": "Teruel",
-      "region": "Aragón",
+      "region": "Otras",
       "zonas": [
         "teruel"
       ]
@@ -704,7 +704,7 @@ const DATASET = {
     {
       "id": "toledo",
       "nombre": "Toledo",
-      "region": "Castilla-La Mancha",
+      "region": "Otras",
       "zonas": [
         "toledo"
       ]
@@ -712,7 +712,7 @@ const DATASET = {
     {
       "id": "valencia",
       "nombre": "Valencia",
-      "region": "Comunidad Valenciana",
+      "region": "Otras",
       "zonas": [
         "valencia"
       ]
@@ -720,7 +720,7 @@ const DATASET = {
     {
       "id": "valladolid",
       "nombre": "Valladolid",
-      "region": "Castilla y León",
+      "region": "Otras",
       "zonas": [
         "valladolid"
       ]
@@ -728,7 +728,7 @@ const DATASET = {
     {
       "id": "vigo",
       "nombre": "Vigo",
-      "region": "Galicia",
+      "region": "Otras",
       "zonas": [
         "vigo"
       ]
@@ -736,7 +736,7 @@ const DATASET = {
     {
       "id": "vitoria-gasteiz",
       "nombre": "Vitoria-Gasteiz",
-      "region": "País Vasco",
+      "region": "Otras",
       "zonas": [
         "vitoria-gasteiz"
       ]
@@ -744,7 +744,7 @@ const DATASET = {
     {
       "id": "zamora",
       "nombre": "Zamora",
-      "region": "Castilla y León",
+      "region": "Otras",
       "zonas": [
         "zamora"
       ]
@@ -752,7 +752,7 @@ const DATASET = {
     {
       "id": "zaragoza",
       "nombre": "Zaragoza",
-      "region": "Aragón",
+      "region": "Otras",
       "zonas": [
         "zaragoza"
       ]
@@ -760,14 +760,13 @@ const DATASET = {
   ],
   "zonas": [
     {
-      "id": "a-coruna",
+      "id": "a-corua-a",
       "nombre": "ZBE",
-      "nombre_completo": "A Coruña",
-      "ciudad_id": "a-coruna",
+      "nombre_completo": "A CoruÃ±a",
+      "ciudad_id": "a-corua-a",
       "vigencia": "En vigor",
-      "lat": 43.3623,
-      "lng": -8.4115,
-      "geojson_url": "data/geojson/a-coruna.geojson"
+      "lat": null,
+      "lng": null
     },
     {
       "id": "albacete",
@@ -790,24 +789,22 @@ const DATASET = {
       "geojson_url": "data/geojson/alicante.geojson"
     },
     {
-      "id": "almeria",
+      "id": "almera-a",
       "nombre": "ZBE",
-      "nombre_completo": "Almería",
-      "ciudad_id": "almeria",
+      "nombre_completo": "AlmerÃ­a",
+      "ciudad_id": "almera-a",
       "vigencia": "En vigor",
-      "lat": 36.8417,
-      "lng": -2.4597,
-      "geojson_url": "data/geojson/almeria.geojson"
+      "lat": null,
+      "lng": null
     },
     {
-      "id": "avila",
+      "id": "a-vila",
       "nombre": "ZBE",
-      "nombre_completo": "Ávila",
-      "ciudad_id": "avila",
+      "nombre_completo": "Ãvila",
+      "ciudad_id": "a-vila",
       "vigencia": "En vigor",
-      "lat": 40.6566,
-      "lng": -4.6814,
-      "geojson_url": "data/geojson/avila.geojson"
+      "lat": null,
+      "lng": null
     },
     {
       "id": "badajoz",
@@ -850,33 +847,31 @@ const DATASET = {
       "geojson_url": "data/geojson/burgos.geojson"
     },
     {
-      "id": "caceres",
+      "id": "ca-ceres",
       "nombre": "ZBE",
-      "nombre_completo": "Cáceres",
-      "ciudad_id": "caceres",
+      "nombre_completo": "CÃ¡ceres",
+      "ciudad_id": "ca-ceres",
       "vigencia": "En vigor",
-      "lat": 39.4753,
-      "lng": -6.3724,
-      "geojson_url": "data/geojson/caceres.geojson"
+      "lat": null,
+      "lng": null
     },
     {
-      "id": "cadiz",
+      "id": "ca-diz",
       "nombre": "ZBE",
-      "nombre_completo": "Cádiz",
-      "ciudad_id": "cadiz",
+      "nombre_completo": "CÃ¡diz",
+      "ciudad_id": "ca-diz",
       "vigencia": "En vigor",
-      "lat": 36.5298,
-      "lng": -6.2924
+      "lat": null,
+      "lng": null
     },
     {
-      "id": "castellon",
+      "id": "castella-n",
       "nombre": "ZBE",
-      "nombre_completo": "Castellón",
-      "ciudad_id": "castellon",
+      "nombre_completo": "CastellÃ³n",
+      "ciudad_id": "castella-n",
       "vigencia": "En vigor",
-      "lat": 39.9864,
-      "lng": -0.0513,
-      "geojson_url": "data/geojson/castellon.geojson"
+      "lat": null,
+      "lng": null
     },
     {
       "id": "ceuta",
@@ -898,14 +893,13 @@ const DATASET = {
       "geojson_url": "data/geojson/ciudad-real.geojson"
     },
     {
-      "id": "cordoba",
+      "id": "ca-rdoba",
       "nombre": "ZBE",
-      "nombre_completo": "Córdoba",
-      "ciudad_id": "cordoba",
+      "nombre_completo": "CÃ³rdoba",
+      "ciudad_id": "ca-rdoba",
       "vigencia": "En vigor",
-      "lat": 37.8882,
-      "lng": -4.7794,
-      "geojson_url": "data/geojson/cordoba.geojson"
+      "lat": null,
+      "lng": null
     },
     {
       "id": "cuenca",
@@ -918,13 +912,13 @@ const DATASET = {
       "geojson_url": "data/geojson/cuenca.geojson"
     },
     {
-      "id": "gijon",
+      "id": "gija-n",
       "nombre": "ZBE",
-      "nombre_completo": "Gijón",
-      "ciudad_id": "gijon",
+      "nombre_completo": "GijÃ³n",
+      "ciudad_id": "gija-n",
       "vigencia": "En vigor",
-      "lat": 43.5453,
-      "lng": -5.6619
+      "lat": null,
+      "lng": null
     },
     {
       "id": "girona",
@@ -977,14 +971,13 @@ const DATASET = {
       "geojson_url": "data/geojson/huesca.geojson"
     },
     {
-      "id": "jaen",
+      "id": "jaa-n",
       "nombre": "ZBE",
-      "nombre_completo": "Jaén",
-      "ciudad_id": "jaen",
+      "nombre_completo": "JaÃ©n",
+      "ciudad_id": "jaa-n",
       "vigencia": "En vigor",
-      "lat": 37.7796,
-      "lng": -3.7849,
-      "geojson_url": "data/geojson/jaen.geojson"
+      "lat": null,
+      "lng": null
     },
     {
       "id": "las-palmas-de-gran-canaria",
@@ -997,14 +990,13 @@ const DATASET = {
       "geojson_url": "data/geojson/las-palmas-de-gran-canaria.geojson"
     },
     {
-      "id": "leon",
+      "id": "lea-n",
       "nombre": "ZBE",
-      "nombre_completo": "León",
-      "ciudad_id": "leon",
+      "nombre_completo": "LeÃ³n",
+      "ciudad_id": "lea-n",
       "vigencia": "En vigor",
-      "lat": 42.5987,
-      "lng": -5.5671,
-      "geojson_url": "data/geojson/leon.geojson"
+      "lat": null,
+      "lng": null
     },
     {
       "id": "lleida",
@@ -1017,13 +1009,13 @@ const DATASET = {
       "geojson_url": "data/geojson/lleida.geojson"
     },
     {
-      "id": "logrono",
+      "id": "logroa-o",
       "nombre": "ZBE",
-      "nombre_completo": "Logroño",
-      "ciudad_id": "logrono",
+      "nombre_completo": "LogroÃ±o",
+      "ciudad_id": "logroa-o",
       "vigencia": "En vigor",
-      "lat": 42.4627,
-      "lng": -2.4449
+      "lat": null,
+      "lng": null
     },
     {
       "id": "lugo",
@@ -1056,24 +1048,22 @@ const DATASET = {
       "geojson_url": "data/geojson/madrid-distrito-centro.geojson"
     },
     {
-      "id": "madrid-plaza-eliptica",
+      "id": "madrid-plaza-ela-ptica",
       "nombre": "ZBE",
-      "nombre_completo": "Madrid Plaza Elíptica",
-      "ciudad_id": "madrid-plaza-eliptica",
+      "nombre_completo": "Madrid Plaza ElÃ­ptica",
+      "ciudad_id": "madrid-plaza-ela-ptica",
       "vigencia": "En vigor",
-      "lat": 40.3854,
-      "lng": -3.7186,
-      "geojson_url": "data/geojson/madrid-plaza-eliptica.geojson"
+      "lat": null,
+      "lng": null
     },
     {
-      "id": "malaga",
+      "id": "ma-laga",
       "nombre": "ZBE",
-      "nombre_completo": "Málaga",
-      "ciudad_id": "malaga",
+      "nombre_completo": "MÃ¡laga",
+      "ciudad_id": "ma-laga",
       "vigencia": "En vigor",
-      "lat": 36.7213,
-      "lng": -4.4217,
-      "geojson_url": "data/geojson/malaga.geojson"
+      "lat": null,
+      "lng": null
     },
     {
       "id": "melilla",
@@ -1163,14 +1153,13 @@ const DATASET = {
       "geojson_url": "data/geojson/salamanca.geojson"
     },
     {
-      "id": "san-sebastian",
+      "id": "san-sebastia-n",
       "nombre": "ZBE",
-      "nombre_completo": "San Sebastián",
-      "ciudad_id": "san-sebastian",
+      "nombre_completo": "San SebastiÃ¡n",
+      "ciudad_id": "san-sebastia-n",
       "vigencia": "En vigor",
-      "lat": 43.3183,
-      "lng": -1.9812,
-      "geojson_url": "data/geojson/san-sebastian.geojson"
+      "lat": null,
+      "lng": null
     },
     {
       "id": "santander",
@@ -1309,30 +1298,5 @@ const DATASET = {
       "geojson_url": "data/geojson/zaragoza.geojson"
     }
   ],
-  "reglas": [
-    {
-      "zona_id": "a-coruna",
-      "etiquetas": [
-        "0"
-      ],
-      "tipo_vehiculo": "autobus",
-      "tonelaje_min": 0,
-      "tonelaje_max": 3500,
-      "perfil": "particular",
-      "efecto": "CONDICIONADO",
-      "condiciones": []
-    },
-    {
-      "zona_id": "alicante",
-      "etiquetas": [
-        "ECO"
-      ],
-      "tipo_vehiculo": "turismo",
-      "tonelaje_min": 0,
-      "tonelaje_max": 3500,
-      "perfil": "particular",
-      "efecto": "LIBRE",
-      "condiciones": []
-    }
-  ]
+  "reglas": []
 };
