@@ -1,6 +1,6 @@
 // AUTOGENERADO por scripts/build-dataset.mjs — NO EDITAR A MANO.
 // Fuente: data/zbe.csv (export del Google Sheets)
-// Generado: 2026-07-24T11:56:53.499Z
+// Generado: 2026-07-24T14:15:37.511Z
 const DATASET = {
   "catalogos": {
     "grupos_perfil": [
